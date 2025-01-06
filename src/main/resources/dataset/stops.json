@@ -1,0 +1,188 @@
+[
+  {
+    "stop_code": "SIN001",
+    "stop_name": "Sintra",
+    "latitude": 38.800956,
+    "longitude": -9.378895
+  },
+  {
+    "stop_code": "MEM002",
+    "stop_name": "Mem Martins",
+    "latitude": 38.78722,
+    "longitude": -9.35957
+  },
+  {
+    "stop_code": "RIO003",
+    "stop_name": "Rio de Mouro",
+    "latitude": 38.768321,
+    "longitude": -9.351234
+  },
+  {
+    "stop_code": "CAC004",
+    "stop_name": "Cacém",
+    "latitude": 38.762421,
+    "longitude": -9.297929
+  },
+  {
+    "stop_code": "QUE005",
+    "stop_name": "Queluz",
+    "latitude": 38.754161,
+    "longitude": -9.256475
+  },
+  {
+    "stop_code": "AMAD006",
+    "stop_name": "Amadora",
+    "latitude": 38.75776,
+    "longitude": -9.239391
+  },
+  {
+    "stop_code": "REB007",
+    "stop_name": "Reboleira",
+    "latitude": 38.742688,
+    "longitude": -9.23011
+  },
+  {
+    "stop_code": "ODO008",
+    "stop_name": "Odivelas",
+    "latitude": 38.792553,
+    "longitude": -9.183899
+  },
+  {
+    "stop_code": "LOU009",
+    "stop_name": "Loures",
+    "latitude": 38.829069,
+    "longitude": -9.168236
+  },
+  {
+    "stop_code": "OER010",
+    "stop_name": "Oeiras",
+    "latitude": 38.6911,
+    "longitude": -9.301444
+  },
+  {
+    "stop_code": "ALG011",
+    "stop_name": "Algés",
+    "latitude": 38.702633,
+    "longitude": -9.229431
+  },
+  {
+    "stop_code": "BAR012",
+    "stop_name": "Barreiro",
+    "latitude": 38.660004,
+    "longitude": -9.073307
+  },
+  {
+    "stop_code": "PIN013",
+    "stop_name": "Pinhal Novo",
+    "latitude": 38.631718,
+    "longitude": -8.911888
+  },
+  {
+    "stop_code": "SET014",
+    "stop_name": "Setúbal",
+    "latitude": 38.52437,
+    "longitude": -8.889046
+  },
+  {
+    "stop_code": "SES015",
+    "stop_name": "Sesimbra",
+    "latitude": 38.444229,
+    "longitude": -9.10137
+  },
+  {
+    "stop_code": "TRO016",
+    "stop_name": "Troia",
+    "latitude": 38.485062,
+    "longitude": -8.905588
+  },
+  {
+    "stop_code": "COI017",
+    "stop_name": "Coina",
+    "latitude": 38.5851543,
+    "longitude": -9.0542277
+  },
+  {
+    "stop_code": "PAL018",
+    "stop_name": "Palmela",
+    "latitude": 38.569937,
+    "longitude": -8.902397
+  },
+  {
+    "stop_code": "CAIS019",
+    "stop_name": "Cais do Sodré",
+    "latitude": 38.705144,
+    "longitude": -9.144675
+  },
+  {
+    "stop_code": "ENT020",
+    "stop_name": "Entrecampos",
+    "latitude": 38.741067,
+    "longitude": -9.148081
+  },
+  {
+    "stop_code": "CHA021",
+    "stop_name": "Charneca da Caparica",
+    "latitude": 38.62634,
+    "longitude": -9.196754
+  },
+  {
+    "stop_code": "CAC022",
+    "stop_name": "Cacilhas",
+    "latitude": 38.6807935,
+    "longitude": -9.1496838
+  },
+  {
+    "stop_code": "PRAG023",
+    "stop_name": "Pragal",
+    "latitude": 38.673353,
+    "longitude": -9.180905
+  },
+  {
+    "stop_code": "SEI024",
+    "stop_name": "Seixal",
+    "latitude": 38.640064,
+    "longitude": -9.101444
+  },
+  {
+    "stop_code": "COR025",
+    "stop_name": "Corroios",
+    "latitude": 38.646651,
+    "longitude": -9.149311
+  },
+  {
+    "stop_code": "FOR026",
+    "stop_name": "Fogueteiro",
+    "latitude": 38.611389,
+    "longitude": -9.104167
+  },
+  {
+    "stop_code": "ARR027",
+    "stop_name": "Arrentela",
+    "latitude": 38.629469,
+    "longitude": -9.081612
+  },
+  {
+    "stop_code": "ALC028",
+    "stop_name": "Alcochete",
+    "latitude": 38.7557,
+    "longitude": -8.9608
+  },
+  {
+    "stop_code": "MON029",
+    "stop_name": "Monte da Caparica",
+    "latitude": 38.666844,
+    "longitude": -9.21753
+  },
+  {
+    "stop_code": "CAP030",
+    "stop_name": "Caparica",
+    "latitude": 38.637222,
+    "longitude": -9.231389
+  },
+  {
+    "stop_code": "CAS031",
+    "stop_name": "Cascais",
+    "latitude": 38.6979,
+    "longitude": -9.4215
+  }
+]
