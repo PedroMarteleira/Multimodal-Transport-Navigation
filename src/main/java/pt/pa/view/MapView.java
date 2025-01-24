@@ -1,15 +1,20 @@
 package pt.pa.view;
 
+import com.brunomnsilva.smartgraph.graph.Edge;
 import com.brunomnsilva.smartgraph.graph.Graph;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
 import com.brunomnsilva.smartgraph.graphview.SmartGraphProperties;
 import com.brunomnsilva.smartgraph.graphview.SmartRandomPlacementStrategy;
 import javafx.scene.layout.BorderPane;
+import pt.pa.model.Route;
+import pt.pa.model.Stop;
+import pt.pa.observer.Observer;
 import pt.pa.utils.PropertiesUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Objects;
 
 /**
  * Represents the graphical view of a transport map. This class is responsible for
@@ -18,13 +23,13 @@ import java.net.URL;
  *
  * <p>This class extends {@link BorderPane} to lay out the map visualization.</p>
  */
-public class MapView extends BorderPane {
+public class MapView extends BorderPane implements Observer {
 
     // For cohesion purposes, please parametrize me
     private SmartGraphPanel graphView;
 
     // For cohesion purposes, please parametrize me
-    private Graph graph;
+    private Graph<Stop, Route> graph;
 
     private final int mapWidth, mapHeight;
 
@@ -50,10 +55,10 @@ public class MapView extends BorderPane {
      * @param graph The transport map to be visualized in the {@code MapView}.
      * @throws Exception If an error occurs while setting up the graph view (e.g., loading properties or CSS).
      */
-    public MapView(Graph graph) throws Exception {
+    public MapView(Graph<Stop, Route> graph) throws Exception {
         this();
 
-        this.graph = graph;
+        this.graph = Objects.requireNonNull(graph);
         InputStream smartgraphProperties = getClass().getClassLoader().getResourceAsStream("smartgraph.properties");
         URL css = MapView.class.getClassLoader().getResource("styles/smartgraph.css");
 
@@ -75,7 +80,10 @@ public class MapView extends BorderPane {
     }
 
     private void setSmartGraphVertexPositions() {
-        // Please code me
+        graph.vertices().forEach(vertex -> {
+            int[] coordinates = computeVertexScreenPosition(vertex.element().getLatitude(), vertex.element().getLongitude());
+            graphView.setVertexPosition(vertex, coordinates[0], coordinates[1]);
+        });
     }
 
     /**
@@ -97,5 +105,10 @@ public class MapView extends BorderPane {
         int x = (int) ((longitude - minLon) / (maxLon - minLon) * mapWidth);
 
         return new int[]{x, y};
+    }
+
+    @Override
+    public void update(Object obj) {
+        setSmartGraphVertexPositions();
     }
 }

@@ -538,7 +538,7 @@
     "duration_bus": 25,
     "duration_boat": null,
     "duration_walk": null,
-    "cost_train": 0,
+    "cost_train": null,
     "cost_bus": 5.15,
     "cost_boat": null,
     "cost_walk": null
