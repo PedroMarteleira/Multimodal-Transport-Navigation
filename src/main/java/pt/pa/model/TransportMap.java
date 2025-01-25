@@ -34,9 +34,7 @@ public class TransportMap extends Subject {
      * @param stop to add
      */
     public void addStop(Stop stop) {
-        if(stop != null) {
-            getGraph().insertVertex(stop);
-        }
+        getGraph().insertVertex(Objects.requireNonNull(stop));
         notifyObservers(null);
     }
 

@@ -116,7 +116,7 @@ public class TransportMapLoaderUtil {
                     });
                     //Cast the json to the class:
                     TransportInformation information = gson.fromJson(jsonObject, TransportInformation.class);
-                    route.addTransport(transport, information);
+                    route.putTransport(transport, information);
                 }
             });
         }

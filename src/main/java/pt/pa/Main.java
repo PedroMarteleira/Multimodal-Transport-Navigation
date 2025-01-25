@@ -10,6 +10,9 @@ import pt.pa.model.TransportMap;
 import pt.pa.utils.TransportMapLoaderUtil;
 import pt.pa.view.MapView;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 /**
  * Main class
  *
@@ -26,10 +29,15 @@ public class Main extends Application {
         launch(args);
     }
 
+        private static final String STYLES_FILE_PATH = "src/main/resources/styles/styles.css";
+
     @Override
     public void start(Stage primaryStage) {
-
         try {
+            //General application stylesheet:
+            Path path = Paths.get(STYLES_FILE_PATH);
+            Application.setUserAgentStylesheet(path.toUri().toString());
+
             TransportMap model = TransportMapLoaderUtil.getInstance().getLoadedTransportMap();
 
             MapView view = new MapView(model.getGraph());
@@ -45,7 +53,6 @@ public class Main extends Application {
             e.printStackTrace();
             System.exit(-1);
         }
-
     }
 
 }

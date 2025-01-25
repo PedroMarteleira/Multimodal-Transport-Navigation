@@ -1,0 +1,13 @@
+
+.label {
+    -fx-font-size: 14px;
+}
+
+.title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+.subtitle {
+    -fx-font-weight: bold;
+}

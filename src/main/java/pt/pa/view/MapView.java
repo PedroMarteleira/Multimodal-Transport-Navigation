@@ -2,14 +2,13 @@ package pt.pa.view;
 
 import com.brunomnsilva.smartgraph.graph.Edge;
 import com.brunomnsilva.smartgraph.graph.Graph;
-import com.brunomnsilva.smartgraph.graphview.SmartGraphPanel;
-import com.brunomnsilva.smartgraph.graphview.SmartGraphProperties;
-import com.brunomnsilva.smartgraph.graphview.SmartRandomPlacementStrategy;
+import com.brunomnsilva.smartgraph.graphview.*;
 import javafx.scene.layout.BorderPane;
 import pt.pa.model.Route;
 import pt.pa.model.Stop;
 import pt.pa.observer.Observer;
 import pt.pa.utils.PropertiesUtil;
+import pt.pa.view.dialogs.StopInformationDialog;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -69,6 +68,7 @@ public class MapView extends BorderPane implements Observer {
         }
 
         doLayout();
+        setTriggers();
     }
 
     /**
@@ -106,6 +106,25 @@ public class MapView extends BorderPane implements Observer {
 
         return new int[]{x, y};
     }
+
+    /**
+     * Sets the view events
+     */
+    private void setTriggers() {
+        //Stop double-click event:
+        graphView.setVertexDoubleClickAction(e -> {
+            final Stop stop = ((SmartGraphVertex<Stop>)e).getUnderlyingVertex().element();
+            //TODO: show the menu
+            new StopInformationDialog(stop).show();
+        });
+
+        //Edge double-click event:
+        graphView.setEdgeDoubleClickAction(e -> {
+            final Route route = ((SmartGraphEdge<Route, Stop>)e).getUnderlyingEdge().element();
+            //TODO: show the menu
+        });
+    }
+
 
     @Override
     public void update(Object obj) {
