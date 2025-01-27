@@ -11,3 +11,19 @@
 .subtitle {
     -fx-font-weight: bold;
 }
+
+.text-light {
+    -fx-text-fill: #e0e0e0;
+}
+
+.information-panel {
+    -fx-background-color: rgba(48, 48, 48, 0.6);
+    -fx-pref-height: 100;
+    -fx-padding: 10px;
+}
+
+.side-menu {
+    -fx-background-color: #f0f0f0;
+    -fx-padding: 10px;
+    -fx-max-width: 150;
+}

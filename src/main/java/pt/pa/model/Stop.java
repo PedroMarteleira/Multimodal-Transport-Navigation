@@ -7,7 +7,7 @@ import java.security.InvalidParameterException;
  *
  * @author Pedro Marteleira (20230334@estudantes.ips.pt)
  */
-public class Stop {
+public class Stop implements Comparable<Stop> {
     private String code, name;
     private double latitude, longitude;
 
@@ -74,5 +74,11 @@ public class Stop {
     @Override
     public String toString() {
         return getName();
+    }
+
+    @Override
+    public int compareTo(Stop o) {
+        if(o == null) return 0;
+        return this.getName().compareTo(o.getName());
     }
 }

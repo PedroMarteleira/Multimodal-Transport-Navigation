@@ -1,10 +1,11 @@
 package pt.pa.view.dialogs;
 
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import pt.pa.model.Stop;
-import pt.pa.view.helpers.ElementCreator;
 
 public class StopInformationDialog extends StandardDialog{
-
+    private static final Paint TEXT_COLOR = Color.color(0xe0, 0xe0, 0xe0);
     /**
      * Class constructor
      *
@@ -12,7 +13,7 @@ public class StopInformationDialog extends StandardDialog{
      */
     public StopInformationDialog(Stop stop) {
         super("Informação da paragem");
-
+        /*
         getRoot().getChildren().setAll(
                 ElementCreator.createTitledLabel("Informação da Paragem"),
                 ElementCreator.createSubtitledLabel("Código"),
@@ -23,6 +24,6 @@ public class StopInformationDialog extends StandardDialog{
                 ElementCreator.createLabel(Double.toString(stop.getLatitude())),
                 ElementCreator.createSubtitledLabel("Longitude"),
                 ElementCreator.createLabel(Double.toString(stop.getLongitude()))
-        );
+        );*/
     }
 }

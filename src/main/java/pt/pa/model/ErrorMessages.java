@@ -15,7 +15,7 @@ public enum ErrorMessages {
             case INVALID_STOP_CODE -> "Código de paragem inválido!";
             case INVALID_STOP_NAME -> "Nome de paragem inválido!";
             case NEGATIVE_DURATION -> "A duração não pode ser negativa!";
-            case NEGATIVE_DISTANCE -> "A disntância não pode ser negativa!";
+            case NEGATIVE_DISTANCE -> "A distância não pode ser negativa!";
             case INVALID_TRANSPORT -> "Transporte inválido!";
         };
     }

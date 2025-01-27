@@ -6,10 +6,8 @@ import com.brunomnsilva.smartgraph.graph.GraphEdgeList;
 import com.brunomnsilva.smartgraph.graph.Vertex;
 import pt.pa.observer.Subject;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Represents the map of transports in the context of the problem (model)
@@ -19,6 +17,7 @@ import java.util.Objects;
 public class TransportMap extends Subject {
     private Graph<Stop, Route> graph;
     private List<String> availableTransports;
+    private Set<Stop> userStops;
 
     /**
      * Class constructor
@@ -27,6 +26,7 @@ public class TransportMap extends Subject {
         super();
         graph = new GraphEdgeList<>();
         availableTransports = new ArrayList<>();
+        userStops = new HashSet<>();
     }
 
     /**
@@ -35,6 +35,16 @@ public class TransportMap extends Subject {
      */
     public void addStop(Stop stop) {
         getGraph().insertVertex(Objects.requireNonNull(stop));
+        notifyObservers(null);
+    }
+
+    /**
+     * Adds a new Stop to the map (counting as a user stop)
+     * @param stop to add
+     */
+    public void addUserStop(Stop stop) {
+        getGraph().insertVertex(Objects.requireNonNull(stop));
+        getUserStops().add(stop);
         notifyObservers(null);
     }
 
@@ -90,10 +100,102 @@ public class TransportMap extends Subject {
     }
 
     /**
+     * Returns the stops added by the user
+     * @return stops added by the user
+     */
+    public Collection<Stop> getUserStops() {
+        return userStops;
+    }
+
+    /**
      * Returns all the routes in the map
      * @return all the routes in the map
      */
     public Collection<Route> getRoutes() {
         return getGraph().edges().stream().map(Edge::element).toList();
+    }
+
+    /**
+     * Returns the vertex containing the stop
+     * @param stop to find
+     * @return vertex containing the stop, null if it doesn't exist
+     */
+    public Vertex<Stop> getVertexOfStop(Stop stop) {
+        return getGraph().vertices().stream().filter(v -> v.element().equals(stop)).findFirst().orElse(null);
+    }
+
+    /**
+     * Returns the edge containing the route
+     * @param route to find
+     * @return edge containing the route, null if it doesn't exist
+     */
+    public Edge<Route, Stop> getEdgeOfRoute(Route route) {
+        return getGraph().edges().stream().filter(e -> e.element().equals(route)).findFirst().orElse(null);
+    }
+
+    /**
+     * Returns the amount of stops adjacent to the provided one
+     * @param stop to count adjacent stops from
+     * @return number of stops adjacent stops
+     */
+    private int getNumberOfAdjacentStops(Stop stop) {
+        Vertex<Stop> stopVertex = getVertexOfStop(stop);
+        if(stopVertex == null) return 0;
+        return getGraph().incidentEdges(stopVertex).size();
+    }
+
+    /**
+     * Returns the amount of stops in the map
+     * @return Number of stops in the map
+     */
+    public int getNumberOfStops() {
+        return getStops().size();
+    }
+
+    /**
+     * Returns the total amount of routes (counting all trasnports each route)
+     * @return total amount of routes
+     */
+    public int getNumberOfRoutes() {
+        return getRoutes().size();
+    }
+
+    /**
+     * Returns the amount of isolated stops in the map
+     * @return number of isolated stops in the map
+     */
+    public int getNumberOfIsolatedStops() {
+        return (int) getStops().stream().filter(stop -> getNumberOfAdjacentStops(stop) == 0).count();
+    }
+
+    /**
+     * Returns the amount of stops inserted by the user
+     * @return number of stops inserted by the user
+     */
+    public int getNumberOfUserStops() {
+        return userStops.size();
+    }
+
+    /**
+     * Returns the amount of routes per transport
+     * @return Map [Transport, Number of routes] (sorted by transport name asc)
+     */
+    public Map<String, Integer> getNumberOfRoutesPerTransport() {
+        Map<String, Integer> map = new TreeMap<>();
+        getAvailableTransports().forEach(transport -> {
+            map.put(transport, (int) getRoutes().stream().filter(route -> route.getAvailableTransports().contains(transport)).count());
+        });
+        return map;
+    }
+
+    /**
+     * Returns the list of stops that support all transports
+     * @return stops that support all transports
+     */
+    public Collection<Stop> getStopsWithAllTransports() {
+        return getStops().stream().filter(stop -> {
+            final Set<String> stopTransports = getGraph().incidentEdges(getVertexOfStop(stop)).stream().map(Edge::element).map(Route::getAvailableTransports).flatMap(Collection::stream).collect(Collectors.toSet());
+            return stopTransports.size() == getAvailableTransports().size();
+        }).sorted().toList();
     }
 }

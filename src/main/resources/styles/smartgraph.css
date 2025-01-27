@@ -81,3 +81,10 @@ This should help you understand which styles you can apply.
 .arrow {
     -fx-stroke-dash-array: none;
 }
+
+.vertex-marked {
+    -fx-stroke-width: 3;
+    -fx-stroke: #c800ff;
+    -fx-stroke-type: outside; /* you should keep this if using arrows */
+    -fx-fill: #ffc400;
+}

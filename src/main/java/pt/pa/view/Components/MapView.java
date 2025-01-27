@@ -1,9 +1,10 @@
-package pt.pa.view;
+package pt.pa.view.Components;
 
-import com.brunomnsilva.smartgraph.graph.Edge;
 import com.brunomnsilva.smartgraph.graph.Graph;
+import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.*;
 import javafx.scene.layout.BorderPane;
+import pt.pa.controller.TransportMapController;
 import pt.pa.model.Route;
 import pt.pa.model.Stop;
 import pt.pa.observer.Observer;
@@ -13,6 +14,8 @@ import pt.pa.view.dialogs.StopInformationDialog;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Objects;
 
 /**
@@ -68,7 +71,6 @@ public class MapView extends BorderPane implements Observer {
         }
 
         doLayout();
-        setTriggers();
     }
 
     /**
@@ -110,7 +112,7 @@ public class MapView extends BorderPane implements Observer {
     /**
      * Sets the view events
      */
-    private void setTriggers() {
+    public void setTriggers(TransportMapController controller) {
         //Stop double-click event:
         graphView.setVertexDoubleClickAction(e -> {
             final Stop stop = ((SmartGraphVertex<Stop>)e).getUnderlyingVertex().element();
@@ -125,6 +127,21 @@ public class MapView extends BorderPane implements Observer {
         });
     }
 
+    /**
+     * Clears all marked vertices from the map
+     */
+    public void clearMarkedVertices() {
+        graph.vertices().stream().map(graphView::getStylableVertex).forEach(style -> style.setStyleClass("vertex"));
+    }
+
+    /**
+     * Marks all requested vertices on the map
+     * @param vertices to mark
+     */
+    public void markVertices(Collection<Vertex<Stop>> vertices) {
+        clearMarkedVertices();
+        vertices.stream().map(graphView::getStylableVertex).forEach(style -> style.setStyleClass("vertex-marked"));
+    }
 
     @Override
     public void update(Object obj) {
