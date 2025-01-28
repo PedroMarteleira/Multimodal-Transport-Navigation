@@ -4,7 +4,15 @@ import com.brunomnsilva.smartgraph.graph.Edge;
 import com.brunomnsilva.smartgraph.graph.Graph;
 import com.brunomnsilva.smartgraph.graph.GraphEdgeList;
 import com.brunomnsilva.smartgraph.graph.Vertex;
+import pt.pa.exception.MissingTransportException;
 import pt.pa.observer.Subject;
+import pt.pa.strategy.path.LargestPathStrategy;
+import pt.pa.strategy.path.PathStrategy;
+import pt.pa.strategy.path.ShortestPathStrategy;
+import pt.pa.strategy.transport.FixedTransportStrategy;
+import pt.pa.strategy.transport.LowestDistanceStrategy;
+import pt.pa.strategy.transport.LowestDurationStrategy;
+import pt.pa.strategy.transport.TransportStrategy;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -19,6 +27,10 @@ public class TransportMap extends Subject {
     private List<String> availableTransports;
     private Set<Stop> userStops;
 
+    private TransportStrategy transportStrategy;
+    private PathStrategy pathStrategy;
+
+
     /**
      * Class constructor
      */
@@ -27,6 +39,8 @@ public class TransportMap extends Subject {
         graph = new GraphEdgeList<>();
         availableTransports = new ArrayList<>();
         userStops = new HashSet<>();
+        transportStrategy = new LowestDurationStrategy(); //Default strategy
+        pathStrategy = new ShortestPathStrategy();
     }
 
     /**
@@ -197,5 +211,60 @@ public class TransportMap extends Subject {
             final Set<String> stopTransports = getGraph().incidentEdges(getVertexOfStop(stop)).stream().map(Edge::element).map(Route::getAvailableTransports).flatMap(Collection::stream).collect(Collectors.toSet());
             return stopTransports.size() == getAvailableTransports().size();
         }).sorted().toList();
+    }
+
+    public void setPathStrategy(PathStrategy pathStrategy) {
+        this.pathStrategy = Objects.requireNonNull(pathStrategy);
+    }
+
+    public void setTransportStrategy(TransportStrategy transportStrategy) {
+        this.transportStrategy = Objects.requireNonNull(transportStrategy);
+    }
+
+    public Path findPath(Stop start, Stop end) {
+        Vertex<Stop> startVertex = getVertexOfStop(start);
+        Vertex<Stop> endVertex = getVertexOfStop(end);
+
+        final Queue<Path> bestPaths = new PriorityQueue<>(pathStrategy);
+        final Set<Vertex<Stop>> visited = new HashSet<>();
+
+        bestPaths.add(new Path(Collections.singletonList(startVertex)));
+
+        while (!bestPaths.isEmpty() && !bestPaths.peek().getLastVertex().equals(endVertex)) {
+            Path current = bestPaths.remove();
+            visited.add(current.getLastVertex());
+
+            getGraph().incidentEdges(current.getLastVertex()).forEach(edge -> {
+                final Vertex<Stop> vertex = getGraph().opposite(current.getLastVertex(), edge);
+                if(!visited.contains(vertex)) {
+                    try {
+                        //Add the path:
+                        Path newPath = new Path(current);
+                        newPath.addVertex(vertex);
+                        newPath.addEdge(edge);
+                        newPath.addCost(transportStrategy.getWeight(edge.element()));
+                        newPath.addTransport(transportStrategy.getTransport(edge.element()));
+                        bestPaths.add(newPath);
+                    } catch (MissingTransportException e) {/* Next Iteration */}
+                }
+            });
+        }
+
+        return bestPaths.peek();
+    }
+
+    public Path getLongestPathOfTransport(String transport) {
+        setTransportStrategy(new FixedTransportStrategy(transport));
+        Set<Path> paths = new TreeSet<>(new LargestPathStrategy());
+
+        getStops().forEach(stop -> {
+            getStops().forEach(stop1 -> {
+                final Path path = findPath(stop, stop1);
+                if(path != null)
+                    paths.add(path);
+            });
+        });
+
+        return paths.stream().findFirst().orElse(null);
     }
 }

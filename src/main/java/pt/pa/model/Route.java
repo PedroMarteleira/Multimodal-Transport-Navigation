@@ -59,4 +59,13 @@ public class Route {
     public Stop getDestination() {
         return destination;
     }
+
+    /**
+     * Returns the transport information of the given transport
+     * @param transport to extract the information from
+     * @return given TransportInformation
+     */
+    public TransportInformation getTransportInformation(String transport) {
+        return transports.get(transport);
+    }
 }

@@ -1,5 +1,7 @@
 package pt.pa.model;
 
+import pt.pa.exception.ErrorMessages;
+
 import java.security.InvalidParameterException;
 
 /**

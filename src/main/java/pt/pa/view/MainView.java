@@ -3,15 +3,12 @@ package pt.pa.view;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.*;
-import javafx.scene.shape.Path;
 import pt.pa.controller.TransportMapController;
+import pt.pa.model.Path;
 import pt.pa.model.Stop;
 import pt.pa.model.TransportMap;
 import pt.pa.observer.Observer;
-import pt.pa.view.Components.AllTransportStopsSideMenu;
-import pt.pa.view.Components.MainMenuBar;
-import pt.pa.view.Components.MapView;
-import pt.pa.view.Components.StatisticsPanel;
+import pt.pa.view.Components.*;
 
 import java.util.Collection;
 import java.util.Objects;
@@ -89,13 +86,14 @@ public class MainView extends VBox implements Observer, MainViewInterface {
     }
 
     @Override
-    public void displayStopsWithAllTransports(Collection<Stop> stops) {
+    public void displayMarkedStops(Collection<Stop> stops) {
         mapView.markVertices(stops.stream().map(transportMap::getVertexOfStop).toList());
         new AllTransportStopsSideMenu(root, mapView, stops).show();
     }
 
     @Override
     public void displayPath(Path path) {
-        //TODO:
+        mapView.markPath(path);
+        new PathSideMenu(root, mapView, path).show();
     }
 }

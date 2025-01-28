@@ -1,5 +1,7 @@
 package pt.pa.model;
 
+import pt.pa.exception.ErrorMessages;
+
 import java.security.InvalidParameterException;
 
 /**
@@ -55,5 +57,17 @@ public class TransportInformation {
         if(duration < 0.0)
             throw new InvalidParameterException(ErrorMessages.NEGATIVE_DURATION.toString());
         this.duration = duration;
+    }
+
+    public double getCost() {
+        return cost;
+    }
+
+    public double getDistance() {
+        return distance;
+    }
+
+    public double getDuration() {
+        return duration;
     }
 }

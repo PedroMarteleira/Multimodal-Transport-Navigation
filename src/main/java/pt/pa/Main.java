@@ -1,5 +1,6 @@
 package pt.pa;
 
+import com.brunomnsilva.smartgraph.graph.Vertex;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -20,6 +21,8 @@ import java.nio.file.Paths;
  */
 public class Main extends Application {
 
+    public static final String STYLES_FILE_PATH = "src/main/resources/styles/styles.css";
+
     /**
      * The default entry point of the application
      *
@@ -29,13 +32,11 @@ public class Main extends Application {
         launch(args);
     }
 
-        private static final String STYLES_FILE_PATH = "src/main/resources/styles/styles.css";
-
     @Override
     public void start(Stage primaryStage) {
         try {
             //General application stylesheet:
-            Path path = Paths.get(STYLES_FILE_PATH);
+            Path stylesFilePath = Paths.get(STYLES_FILE_PATH);
 
             TransportMap model = TransportMapLoaderUtil.getInstance().getLoadedTransportMap();
 
@@ -47,7 +48,7 @@ public class Main extends Application {
             model.addObservers(view);
 
             Scene scene = new Scene(view, 1024, 720);
-            scene.getStylesheets().add(path.toUri().toString());
+            scene.getStylesheets().add(stylesFilePath.toUri().toString());
 
             Stage stage = new Stage(StageStyle.DECORATED);
 

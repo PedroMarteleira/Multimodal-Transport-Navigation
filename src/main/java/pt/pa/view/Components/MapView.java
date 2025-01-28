@@ -1,10 +1,12 @@
 package pt.pa.view.Components;
 
+import com.brunomnsilva.smartgraph.graph.Edge;
 import com.brunomnsilva.smartgraph.graph.Graph;
 import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.*;
 import javafx.scene.layout.BorderPane;
 import pt.pa.controller.TransportMapController;
+import pt.pa.model.Path;
 import pt.pa.model.Route;
 import pt.pa.model.Stop;
 import pt.pa.observer.Observer;
@@ -16,6 +18,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -141,6 +144,27 @@ public class MapView extends BorderPane implements Observer {
     public void markVertices(Collection<Vertex<Stop>> vertices) {
         clearMarkedVertices();
         vertices.stream().map(graphView::getStylableVertex).forEach(style -> style.setStyleClass("vertex-marked"));
+    }
+
+    /**
+     * Clears all the marked edges in the map
+     */
+    public void clearMarkedEdges() {
+        graph.edges().stream().map(graphView::getStylableEdge).forEach(style -> style.setStyleClass("edge"));
+    }
+
+    /**
+     * Displays the path in the map with the right colors
+     * @param path Path do display
+     */
+    public void markPath(Path path) {
+        if(path == null) return;
+
+        final List<Edge<Route, Stop>> edges = path.getEdges();
+        final List<String> transports = path.getTransports().stream().toList();
+        for (int i = 0; i < Math.min(edges.size(), transports.size()); i++) {
+            graphView.getStylableEdge(edges.get(i)).setStyleClass("edge-" + transports.get(i));
+        }
     }
 
     @Override

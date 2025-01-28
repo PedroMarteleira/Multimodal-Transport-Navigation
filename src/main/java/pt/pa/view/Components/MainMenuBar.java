@@ -31,9 +31,9 @@ public class MainMenuBar extends MenuBar {
                 ),
                 ComponentBuilder.createMenu("Métricas",
                         ComponentBuilder.createMenuItem("Paragens com todos os transportes...", "",e -> controller.doShowStopsWithAllTransports()),
-                        ComponentBuilder.createMenuItem("Percurso mais longo de comboio...", "",e->{}),
-                        ComponentBuilder.createMenuItem("Percurso mais longo de autocarro...", "",e->{}),
-                        ComponentBuilder.createMenuItem("Percurso mais longo a pé...", "",e->{})
+                        ComponentBuilder.createMenuItem("Percurso mais longo de comboio...", "",e -> controller.doShowBiggestPathOfTrain()),
+                        ComponentBuilder.createMenuItem("Percurso mais longo de autocarro...", "",e -> controller.doShowBiggestPathOfBus()),
+                        ComponentBuilder.createMenuItem("Percurso mais longo a pé...", "",e -> controller.doShowBiggestPathOfWalk())
                 )
         );
     }
