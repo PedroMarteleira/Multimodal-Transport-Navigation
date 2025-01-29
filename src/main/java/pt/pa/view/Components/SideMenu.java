@@ -9,6 +9,8 @@ import java.util.Objects;
 
 /**
  * Provides a menu with a close button that shows in the side of the screen
+ *
+ * @author Pedro Marteleira (202300334@estudantes.ips.pt)
  */
 public abstract class SideMenu extends VBox {
     private Button quitButton;
@@ -20,7 +22,7 @@ public abstract class SideMenu extends VBox {
      */
     public SideMenu(Pane parent) {
         super();
-        quitButton = new Button("Fechar");
+        quitButton = new Button("Voltar");
         this.parent = Objects.requireNonNull(parent);
         this.getStyleClass().add("side-menu");
 

@@ -10,6 +10,8 @@ import java.util.Objects;
 
 /**
  * Menu used to display all stops with all transports available
+ *
+ * @author Pedro Marteleira (202300334@estudantes.ips.pt)
  */
 public class AllTransportStopsSideMenu extends SideMenu {
     private MapView mapView;

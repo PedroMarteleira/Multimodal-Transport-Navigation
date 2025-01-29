@@ -7,6 +7,8 @@ import java.util.Objects;
 
 /**
  * Represents a route in the context of the problem (can be done by many transports)
+ *
+ * @author Pedro Marteleira (20230334@estudantes.ips.pt)
  */
 public class Route {
     private Stop start, destination;

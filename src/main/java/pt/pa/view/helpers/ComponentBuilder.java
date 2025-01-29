@@ -2,13 +2,15 @@ package pt.pa.view.helpers;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+
+import java.util.Collection;
+import java.util.Objects;
+
 
 /**
  * Helper class to create some components and avoid the repeated code.
@@ -102,5 +104,40 @@ public abstract class ComponentBuilder {
             menuItem.setAccelerator(KeyCombination.keyCombination(shortcut));
         menuItem.setOnAction(eventHandler);
         return menuItem;
+    }
+
+    /**
+     * Creates a checkbox
+     * @param text Text show in the checkbox
+     * @param selectedItems Collection of selected items, (added and removed when selected/unselected) [can be null]
+     * @return Checkbox with the given attributes
+     */
+    public static CheckBox createCheckBox(String text, Collection<String> selectedItems) {
+        CheckBox checkbox = new CheckBox(Objects.requireNonNull(text));
+        if(selectedItems != null) {
+            checkbox.setOnAction(e -> {
+                if (((CheckBox) e.getTarget()).isSelected()) {
+                    selectedItems.add(text);
+                } else {
+                    selectedItems.remove(text);
+                }
+            });
+
+            if (selectedItems.contains(text))
+                checkbox.setSelected(true);
+        }
+        return checkbox;
+    }
+
+    /**
+     * Creates a simple button
+     * @param text button Text
+     * @param eventHandler Action (executed when the button is pressed)
+     * @return Button with the given attributes
+     */
+    public static Button createButton(String text, EventHandler<ActionEvent> eventHandler) {
+        Button button = new Button(text);
+        button.setOnAction(eventHandler);
+        return button;
     }
 }

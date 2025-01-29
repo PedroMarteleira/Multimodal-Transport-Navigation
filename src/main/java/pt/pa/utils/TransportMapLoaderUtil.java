@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 /**
  * Utility using the singleton approach to load the TransportMap Data from the files
@@ -93,7 +95,7 @@ public class TransportMapLoaderUtil {
 
             //Get all existing transports
             if(!areTransportsLoaded) {
-                transportMap.setAvailableTransports(obj.keySet().stream().filter(s -> s.startsWith(someTransportField)).map(s -> s.substring(someTransportField.length() + 1)).toList());
+                transportMap.setAvailableTransports(obj.keySet().stream().filter(s -> s.startsWith(someTransportField)).map(s -> s.substring(someTransportField.length() + 1)).collect(Collectors.toCollection(TreeSet::new)));
                 areTransportsLoaded = true;
             }
 

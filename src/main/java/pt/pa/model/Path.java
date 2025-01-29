@@ -10,6 +10,8 @@ import java.util.Objects;
 
 /**
  * Represents a path in the context of the problem
+ *
+ * @author Pedro Marteleira (20230334@estudantes.ips.pt)
  */
 public class Path {
     private List<Vertex<Stop>> vertices;

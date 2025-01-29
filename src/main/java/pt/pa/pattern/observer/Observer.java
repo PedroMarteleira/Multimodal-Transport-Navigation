@@ -1,4 +1,4 @@
-package pt.pa.observer;
+package pt.pa.pattern.observer;
 
 /**
  * Represents the Observer in the Observer Pattern

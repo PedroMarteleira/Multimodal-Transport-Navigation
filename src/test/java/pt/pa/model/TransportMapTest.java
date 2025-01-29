@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 class TransportMapTest {
@@ -62,7 +64,7 @@ class TransportMapTest {
 
     @Test
     void setAvailableTransports() {
-        List<String> availableTransports = new ArrayList<>();
+        Set<String> availableTransports = new TreeSet<>();
         availableTransports.add("walk");
         availableTransports.add("boat");
         availableTransports.add("boat");
@@ -74,7 +76,7 @@ class TransportMapTest {
     @Test
     void getAvailableTransports() {
         assertFalse(transportMap.getAvailableTransports().contains("walk"));
-        List<String> availableTransports = new ArrayList<>();
+        Set<String> availableTransports = new TreeSet<>();
         availableTransports.add("walk");
         transportMap.setAvailableTransports(availableTransports);
         assertTrue(transportMap.getAvailableTransports().contains("walk"));

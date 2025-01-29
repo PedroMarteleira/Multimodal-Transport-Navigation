@@ -1,19 +1,28 @@
 package pt.pa.view.Components;
 
 import javafx.scene.control.MenuBar;
-import pt.pa.controller.TransportMapController;
+import pt.pa.model.TransportMap;
+import pt.pa.model.TransportMapController;
+import pt.pa.view.MainView;
 import pt.pa.view.helpers.ComponentBuilder;
+
+import java.util.Objects;
 
 /**
  * Provides that classic top menu present on the most classic apps
+ *
+ * @author Pedro Marteleira (202300334@estudantes.ips.pt)
  */
 public class MainMenuBar extends MenuBar {
+
+    private MainView mainView;
 
     /**
      * Class constructor
      */
-    public MainMenuBar() {
+    public MainMenuBar(MainView mainView) {
         super();
+        this.mainView = Objects.requireNonNull(mainView);
     }
 
     /**
@@ -34,6 +43,9 @@ public class MainMenuBar extends MenuBar {
                         ComponentBuilder.createMenuItem("Percurso mais longo de comboio...", "",e -> controller.doShowBiggestPathOfTrain()),
                         ComponentBuilder.createMenuItem("Percurso mais longo de autocarro...", "",e -> controller.doShowBiggestPathOfBus()),
                         ComponentBuilder.createMenuItem("Percurso mais longo a pé...", "",e -> controller.doShowBiggestPathOfWalk())
+                ),
+                ComponentBuilder.createMenu("Caminho",
+                        ComponentBuilder.createMenuItem("Caminho mais curto...", "", e -> mainView.showFindShortestPathSetupMenu(controller))
                 )
         );
     }

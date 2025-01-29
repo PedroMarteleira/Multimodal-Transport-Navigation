@@ -1,7 +1,9 @@
-package pt.pa.controller;
-import pt.pa.model.TransportMap;
+package pt.pa.model;
+import pt.pa.pattern.factory.TransportSelectionFactory;
+import pt.pa.view.Components.ShortestPathSetupSideMenu;
 import pt.pa.view.MainViewInterface;
 
+import java.util.Collection;
 import java.util.Objects;
 
 /**
@@ -62,5 +64,44 @@ public class TransportMapController {
      */
     public void doShowBiggestPathOfWalk() {
         displayBiggestPathOfTransport("walk");
+    }
+
+    /**
+     * Shows the shortest path between two stops requested from the user
+     */
+    public void doShowShortestPath(Stop start, Stop end, Collection<String> allowedTransports, CostField field) {
+        final String messageTitle = "Erro ao procurar caminho";
+
+        Objects.requireNonNull(allowedTransports);
+
+        if(start == null) {
+            view.displayError(messageTitle, "Selecione uma paragem de partida!");
+            return;
+        }
+
+        if(end == null) {
+            view.displayError(messageTitle, "Selecione uma paragem de destino!");
+            return;
+        }
+
+        if(field == null) {
+            view.displayError(messageTitle, "Selecione um campo para otimizar!");
+            return;
+        }
+
+        model.setTransportStrategy(TransportSelectionFactory.createTransportSelection(field, allowedTransports));
+        view.displayPath(model.findPath(start, end));
+    }
+
+    /**
+     * Returns the available transports in the model
+     * @return available transports in the model
+     */
+    public Collection<String> getAvailableTransports() {
+        return model.getAvailableTransports();
+    }
+
+    public Collection<Stop> getStops() {
+        return model.getStops().stream().sorted().toList();
     }
 }

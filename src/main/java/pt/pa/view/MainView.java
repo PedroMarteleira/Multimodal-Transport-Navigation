@@ -2,12 +2,13 @@ package pt.pa.view;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.*;
-import pt.pa.controller.TransportMapController;
+import pt.pa.model.TransportMapController;
 import pt.pa.model.Path;
 import pt.pa.model.Stop;
 import pt.pa.model.TransportMap;
-import pt.pa.observer.Observer;
+import pt.pa.pattern.observer.Observer;
 import pt.pa.view.Components.*;
 
 import java.util.Collection;
@@ -36,7 +37,7 @@ public class MainView extends VBox implements Observer, MainViewInterface {
         this.transportMap = Objects.requireNonNull(transportMap);
         this.mapView = new MapView(transportMap.getGraph());
         this.informationPanel = new StatisticsPanel(transportMap);
-        this.menuBar = new MainMenuBar();
+        this.menuBar = new MainMenuBar(this);
 
         this.root = new StackPane();
 
@@ -79,6 +80,14 @@ public class MainView extends VBox implements Observer, MainViewInterface {
         return Objects.requireNonNull(string).substring(0, 1).toUpperCase() + string.substring(1);
     }
 
+    /**
+     * Displays the menu that allows the user to pick the options
+     * @param controller (mvc) TransportMap controller
+     */
+    public void showFindShortestPathSetupMenu(TransportMapController controller) {
+        new ShortestPathSetupSideMenu(root, mapView, controller).show();
+    }
+
     @Override
     public void update(Object obj) {
         mapView.update(null);
@@ -95,5 +104,12 @@ public class MainView extends VBox implements Observer, MainViewInterface {
     public void displayPath(Path path) {
         mapView.markPath(path);
         new PathSideMenu(root, mapView, path).show();
+    }
+
+    @Override
+    public void displayError(String title, String caption) {
+        Alert alert = new Alert(Alert.AlertType.ERROR, caption);
+        alert.setHeaderText(title);
+        alert.showAndWait();
     }
 }

@@ -59,14 +59,26 @@ public class TransportInformation {
         this.duration = duration;
     }
 
+    /**
+     * Returns the cost (Environmental impact)
+     * @return cost
+     */
     public double getCost() {
         return cost;
     }
 
+    /**
+     * Returns the distance (In meters)
+     * @return distance
+     */
     public double getDistance() {
         return distance;
     }
 
+    /**
+     * Returns the duration (In minutes)
+     * @return duration
+     */
     public double getDuration() {
         return duration;
     }

@@ -1,10 +1,12 @@
-package pt.pa.strategy.transport;
+package pt.pa.pattern.strategy.transport;
 
 import pt.pa.exception.MissingTransportException;
 import pt.pa.model.Route;
 
 /**
  * Strategy used to select the best transport from a route
+ *
+ * @author Pedro Marteleira (202300334@estudantes.ips.pt)
  */
 public interface TransportStrategy {
     static final double FACTOR = 1000.0; //Keep decimal numbers using the comparator

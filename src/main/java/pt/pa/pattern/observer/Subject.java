@@ -1,4 +1,4 @@
-package pt.pa.observer;
+package pt.pa.pattern.observer;
 
 import java.util.*;
 
@@ -7,8 +7,8 @@ import java.util.*;
  *
  * @author Pedro Marteleira (202300334@estudantes.ips.pt)
  */
-public class Subject implements Observable{
-    private final Set<Observer> observers;
+public class Subject implements Observable {
+    private final Set<pt.pa.pattern.observer.Observer> observers;
 
     /**
      * Class constructor
@@ -18,7 +18,7 @@ public class Subject implements Observable{
     }
 
     @Override
-    public void addObservers(Observer... observers) {
+    public void addObservers(pt.pa.pattern.observer.Observer... observers) {
         this.observers.addAll(Arrays.asList(observers));
     }
 

@@ -1,14 +1,12 @@
 package pt.pa;
 
-import com.brunomnsilva.smartgraph.graph.Vertex;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import pt.pa.controller.TransportMapController;
+import pt.pa.model.TransportMapController;
 import pt.pa.model.TransportMap;
 import pt.pa.utils.TransportMapLoaderUtil;
-import pt.pa.view.Components.MapView;
 import pt.pa.view.MainView;
 
 import java.nio.file.Path;

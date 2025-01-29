@@ -2,7 +2,7 @@ package pt.pa.view.Components;
 
 import javafx.scene.layout.VBox;
 import pt.pa.model.TransportMap;
-import pt.pa.observer.Observer;
+import pt.pa.pattern.observer.Observer;
 import pt.pa.view.MainView;
 import pt.pa.view.helpers.ComponentBuilder;
 
@@ -10,6 +10,8 @@ import java.util.*;
 
 /**
  * Provides a beautiful transparent gray panel with some information about the transport network
+ *
+ * @author Pedro Marteleira (202300334@estudantes.ips.pt)
  */
 public class StatisticsPanel extends VBox implements Observer {
     private static double ITEM_SPACING = 5.0;

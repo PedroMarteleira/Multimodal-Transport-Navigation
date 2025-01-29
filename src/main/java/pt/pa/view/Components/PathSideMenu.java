@@ -7,11 +7,14 @@ import pt.pa.model.Path;
 import pt.pa.model.Stop;
 import pt.pa.view.helpers.ComponentBuilder;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
 /**
  * Menu that show just the path (without any transport)
+ *
+ * @author Pedro Marteleira (202300334@estudantes.ips.pt)
  */
 public class PathSideMenu extends SideMenu {
     private MapView mapView;
@@ -29,7 +32,10 @@ public class PathSideMenu extends SideMenu {
         this.mapView = Objects.requireNonNull(mapView);
         this.stopContainer = new VBox();
 
-        final Collection<Stop> stops = path.getStops();
+        if(path == null) path = new Path(new ArrayList<>());
+
+        Collection<Stop> stops = path.getStops();
+
         if(stops.isEmpty()) {
             stopContainer.getChildren().setAll(ComponentBuilder.createLabel("Sem dados..."));
         } else {
