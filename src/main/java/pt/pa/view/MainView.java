@@ -2,6 +2,8 @@ package pt.pa.view;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Side;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.*;
 import pt.pa.model.TransportMapController;
@@ -12,6 +14,7 @@ import pt.pa.pattern.observer.Observer;
 import pt.pa.view.Components.*;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Objects;
 
 /**
@@ -28,6 +31,8 @@ public class MainView extends VBox implements Observer, MainViewInterface {
     private StackPane root;
     private StatisticsPanel informationPanel;
 
+    private int defaultMenuLayers;
+
     /**
      * Class constructor
      * @param transportMap model
@@ -40,6 +45,7 @@ public class MainView extends VBox implements Observer, MainViewInterface {
         this.menuBar = new MainMenuBar(this);
 
         this.root = new StackPane();
+        this.defaultMenuLayers = 0;
 
         doLayout();
         update(null);
@@ -59,6 +65,8 @@ public class MainView extends VBox implements Observer, MainViewInterface {
 
         this.getChildren().addAll(menuBar, root);
         mainPane.setBottom(new HBox(informationPanel));
+
+        defaultMenuLayers = root.getChildren().size();
     }
 
     /**
@@ -85,7 +93,18 @@ public class MainView extends VBox implements Observer, MainViewInterface {
      * @param controller (mvc) TransportMap controller
      */
     public void showFindShortestPathSetupMenu(TransportMapController controller) {
+        closeSideMenus();
         new ShortestPathSetupSideMenu(root, mapView, controller).show();
+    }
+
+    /**
+     * Close all menus that aren't shown by default
+     */
+    private void closeSideMenus() {
+        for (int i = defaultMenuLayers; i < root.getChildren().size(); i++) {
+            Node node = root.getChildren().get(i);
+            if(node instanceof SideMenu) ((SideMenu)node).close();
+        }
     }
 
     @Override
@@ -96,14 +115,29 @@ public class MainView extends VBox implements Observer, MainViewInterface {
 
     @Override
     public void displayMarkedStops(Collection<Stop> stops) {
+        closeSideMenus();
         mapView.markVertices(stops.stream().map(transportMap::getVertexOfStop).toList());
         new AllTransportStopsSideMenu(root, mapView, stops).show();
     }
 
     @Override
     public void displayPath(Path path) {
+        closeSideMenus();
         mapView.markPath(path);
         new PathSideMenu(root, mapView, path).show();
+    }
+
+    @Override
+    public void displayShortestPath(Path path) {
+        mapView.markPath(path);
+        new PathSideMenu(root, mapView, path).show();
+    }
+
+    @Override
+    public void showStopInformation(Stop stop) {
+        closeSideMenus();
+        mapView.markVertices(Collections.singletonList(transportMap.getVertexOfStop(stop)));
+        new StopSideMenu(root, mapView, stop).show();
     }
 
     @Override

@@ -67,6 +67,15 @@ public class TransportMapController {
     }
 
     /**
+     * Displays the information about the selected stop
+     * @param stop selected stop
+     */
+    public void doShowStopInformation(Stop stop) {
+        Objects.requireNonNull(stop); //Explode if null
+        view.showStopInformation(stop);
+    }
+
+    /**
      * Shows the shortest path between two stops requested from the user
      */
     public void doShowShortestPath(Stop start, Stop end, Collection<String> allowedTransports, CostField field) {
@@ -90,7 +99,7 @@ public class TransportMapController {
         }
 
         model.setTransportStrategy(TransportSelectionFactory.createTransportSelection(field, allowedTransports));
-        view.displayPath(model.findPath(start, end));
+        view.displayShortestPath(model.findPath(start, end));
     }
 
     /**

@@ -16,8 +16,10 @@ import java.util.Objects;
 public class Path {
     private List<Vertex<Stop>> vertices;
     private List<Edge<Route, Stop>> edges;
-    private double totalCost;
     private List<String> transports;
+
+    private double totalCost;
+    private TransportInformation costsInformation;
 
     /**
      * Class constructor
@@ -28,6 +30,7 @@ public class Path {
         this.totalCost = 0.0;
         this.transports = new ArrayList<>();
         this.edges = new ArrayList<>();
+        this.costsInformation = new TransportInformation();
     }
 
     /**
@@ -39,6 +42,7 @@ public class Path {
         this.edges = new ArrayList<>(path.getEdges());
         this.totalCost = path.getTotalCost();
         this.transports = new ArrayList<>(path.getTransports());
+        this.costsInformation = new TransportInformation(path.getCostsInformation());
     }
 
     /**
@@ -55,6 +59,13 @@ public class Path {
      */
     public void addEdge(Edge<Route, Stop> edge) {
         this.edges.add(Objects.requireNonNull(edge));
+    }
+
+    /**
+     * Adds the given costs (transport information) to the path
+     */
+    public void addCostsInformation(TransportInformation costsInformation) {
+        this.costsInformation = getCostsInformation().sum(costsInformation);
     }
 
     /**
@@ -119,5 +130,13 @@ public class Path {
      */
     public Collection<Stop> getStops() {
         return getVertices().stream().map(Vertex::element).toList();
+    }
+
+    /**
+     * Returns the costs information this Path
+     * @return costs information about this path
+     */
+    public TransportInformation getCostsInformation() {
+        return costsInformation;
     }
 }

@@ -3,6 +3,7 @@ package pt.pa.view.Components;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import pt.pa.model.CostField;
 import pt.pa.model.Path;
 import pt.pa.model.Stop;
 import pt.pa.view.helpers.ComponentBuilder;
@@ -17,9 +18,14 @@ import java.util.Objects;
  * @author Pedro Marteleira (202300334@estudantes.ips.pt)
  */
 public class PathSideMenu extends SideMenu {
+    private static double HOUR_MINS = 60.0;
+
     private MapView mapView;
     private VBox stopContainer;
+
     private Label costLabel;
+    private Label distanceLabel;
+    private Label durationLabel;
 
     /**
      * Class constructor
@@ -37,11 +43,14 @@ public class PathSideMenu extends SideMenu {
         Collection<Stop> stops = path.getStops();
 
         if(stops.isEmpty()) {
-            stopContainer.getChildren().setAll(ComponentBuilder.createLabel("Sem dados..."));
+            stopContainer.getChildren().setAll(ComponentBuilder.createLabel("Caminho Impossível..."));
         } else {
-            stopContainer.getChildren().setAll(stops.stream().map(stop -> ComponentBuilder.createSubtitledLabel("• " + stop.toString())).toList());
+            stopContainer.getChildren().setAll(stops.stream().map(stop -> ComponentBuilder.createLabel("• " + stop.toString())).toList());
         }
-        costLabel = ComponentBuilder.createTitledLabel(String.format("- Custo: %.1f", path.getTotalCost()));
+
+        costLabel = ComponentBuilder.createLabel(String.format("- %s: %.1f", CostField.COST, path.getCostsInformation().getCost()));
+        distanceLabel = ComponentBuilder.createLabel(String.format("- %s: %.1fkm", CostField.DISTANCE, path.getCostsInformation().getDistance()));
+        durationLabel = ComponentBuilder.createLabel(String.format("- %s: %dh %dm", CostField.DURATION, (int)(path.getCostsInformation().getDuration() / HOUR_MINS), Math.round(path.getCostsInformation().getDuration() % HOUR_MINS)));
 
         doLayout();
     }
@@ -53,6 +62,9 @@ public class PathSideMenu extends SideMenu {
         getChildren().addAll(
                 ComponentBuilder.createTitledLabel("Paragens:"),
                 stopContainer,
+                ComponentBuilder.createTitledLabel("Valores:"),
+                durationLabel,
+                distanceLabel,
                 costLabel
         );
     }

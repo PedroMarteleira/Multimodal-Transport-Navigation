@@ -11,7 +11,7 @@ public enum CostField {
     @Override
     public String toString() {
         return switch (this) {
-            case COST -> "Impacto Ambiental";
+            case COST -> "Imp. Ambiental";
             case DURATION -> "Duração";
             case DISTANCE -> "Distância";
         };

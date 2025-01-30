@@ -258,7 +258,11 @@ public class TransportMap extends Subject {
                         newPath.addVertex(vertex);
                         newPath.addEdge(edge);
                         newPath.addCost(transportStrategy.getWeight(edge.element()));
-                        newPath.addTransport(transportStrategy.getTransport(edge.element()));
+
+                        final String usedTransport = transportStrategy.getTransport(edge.element());
+                        newPath.addTransport(usedTransport);
+                        newPath.addCostsInformation(edge.element().getTransportInformation(usedTransport));
+
                         bestPaths.add(newPath);
                     } catch (MissingTransportException e) {/* Next Iteration */}
                 }

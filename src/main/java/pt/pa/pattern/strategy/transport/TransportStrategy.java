@@ -23,5 +23,5 @@ public interface TransportStrategy {
      * @param route Route to extract from
      * @return the transport with the best score of the strategy
      */
-    String getTransport(Route route) throws MissingTransportException ;
+    String getTransport(Route route) throws MissingTransportException;
 }

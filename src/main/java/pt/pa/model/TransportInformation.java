@@ -3,6 +3,7 @@ package pt.pa.model;
 import pt.pa.exception.ErrorMessages;
 
 import java.security.InvalidParameterException;
+import java.util.Objects;
 
 /**
  * Contains the information about the transport in a route
@@ -17,6 +18,14 @@ public class TransportInformation {
      */
     public TransportInformation() {
         this(0.0, 0.0, 0.0);
+    }
+
+    /**
+     * Class copy constructor
+     * @param transportInformation source to copy from
+     */
+    public TransportInformation(TransportInformation transportInformation) {
+        this(transportInformation.getCost(), transportInformation.getDistance(), transportInformation.getDuration());
     }
 
     /**
@@ -81,5 +90,19 @@ public class TransportInformation {
      */
     public double getDuration() {
         return duration;
+    }
+
+    /**
+     * Returns a TransportInformation with the sum of the fields of both (java doesn't have operator overloading)
+     * @param transportInformation other
+     * @return TransportInformation with the sum of the fields from this and the given transportInformation
+     */
+    public TransportInformation sum(TransportInformation transportInformation) {
+        Objects.requireNonNull(transportInformation);
+        return new TransportInformation(
+            getCost() + transportInformation.getCost(),
+            getDistance() + transportInformation.getDistance(),
+            getDuration() + transportInformation.getDuration()
+        );
     }
 }

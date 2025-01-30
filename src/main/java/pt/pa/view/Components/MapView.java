@@ -118,8 +118,7 @@ public class MapView extends BorderPane implements Observer {
         //Stop double-click event:
         graphView.setVertexDoubleClickAction(e -> {
             final Stop stop = ((SmartGraphVertex<Stop>)e).getUnderlyingVertex().element();
-            //TODO: show the menu
-            new StopInformationDialog(stop).show();
+            controller.doShowStopInformation(stop);
         });
 
         //Edge double-click event:

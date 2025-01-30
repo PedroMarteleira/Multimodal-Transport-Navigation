@@ -63,6 +63,13 @@ public abstract class SideMenu extends VBox {
     }
 
     /**
+     * Closes the menu
+     */
+    public void close() {
+        quitButton.fire();
+    }
+
+    /**
      * Function executed when the menu is closed
      */
     protected abstract void onQuit();

@@ -23,6 +23,19 @@ public interface MainViewInterface {
     public void displayPath(Path path);
 
     /**
+     * Displays the shortest path to the user
+     * Note: if you want to use the same menu, just call the other function
+     * @param path to show
+     */
+    public void displayShortestPath(Path path);
+
+    /**
+     * Displays the information about the provided stop
+     * @param stop to show info
+     */
+    public void showStopInformation(Stop stop);
+
+    /**
      * Shows an error to the user
      * @param title message title
      * @param caption message body
