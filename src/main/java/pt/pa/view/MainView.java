@@ -6,12 +6,10 @@ import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.*;
-import pt.pa.model.TransportMapController;
-import pt.pa.model.Path;
-import pt.pa.model.Stop;
-import pt.pa.model.TransportMap;
+import pt.pa.model.*;
 import pt.pa.pattern.observer.Observer;
 import pt.pa.view.Components.*;
+import pt.pa.view.dialogs.RouteInformationDialog;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -138,6 +136,12 @@ public class MainView extends VBox implements Observer, MainViewInterface {
         closeSideMenus();
         mapView.markVertices(Collections.singletonList(transportMap.getVertexOfStop(stop)));
         new StopSideMenu(root, mapView, stop).show();
+    }
+
+    @Override
+    public void showRouteInformation(Route route) {
+        closeSideMenus();
+        new RouteInformationDialog(route).show();
     }
 
     @Override

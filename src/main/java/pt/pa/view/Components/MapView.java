@@ -11,7 +11,6 @@ import pt.pa.model.Route;
 import pt.pa.model.Stop;
 import pt.pa.pattern.observer.Observer;
 import pt.pa.utils.PropertiesUtil;
-import pt.pa.view.dialogs.StopInformationDialog;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -124,7 +123,7 @@ public class MapView extends BorderPane implements Observer {
         //Edge double-click event:
         graphView.setEdgeDoubleClickAction(e -> {
             final Route route = ((SmartGraphEdge<Route, Stop>)e).getUnderlyingEdge().element();
-            //TODO: show the menu
+            controller.doShowRouteInformation(route);
         });
     }
 

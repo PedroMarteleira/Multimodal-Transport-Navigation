@@ -1,6 +1,7 @@
 package pt.pa.view;
 
 import pt.pa.model.Path;
+import pt.pa.model.Route;
 import pt.pa.model.Stop;
 
 import java.util.Collection;
@@ -34,6 +35,12 @@ public interface MainViewInterface {
      * @param stop to show info
      */
     public void showStopInformation(Stop stop);
+
+    /**
+     * Displays the information about the provided route
+     * @param route to show info
+     */
+    public void showRouteInformation(Route route);
 
     /**
      * Shows an error to the user

@@ -76,6 +76,15 @@ public class TransportMapController {
     }
 
     /**
+     * Displays the information about the selected route
+     * @param route selected route
+     */
+    public void doShowRouteInformation(Route route) {
+        Objects.requireNonNull(route); //Explode if null
+        view.showRouteInformation(route);
+    }
+
+    /**
      * Shows the shortest path between two stops requested from the user
      */
     public void doShowShortestPath(Stop start, Stop end, Collection<String> allowedTransports, CostField field) {

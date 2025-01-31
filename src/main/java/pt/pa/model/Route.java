@@ -70,4 +70,12 @@ public class Route {
     public TransportInformation getTransportInformation(String transport) {
         return transports.get(transport);
     }
+
+    /**
+     * Returns the map with the Pair -> transport and the information
+     * @return Map [transport, information]
+     */
+    public Map<String, TransportInformation> getTransportsWithInformation() {
+        return transports;
+    }
 }

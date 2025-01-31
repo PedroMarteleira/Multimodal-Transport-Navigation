@@ -11,6 +11,8 @@ import java.util.Objects;
  * @author Pedro Marteleira (202300334@estudantes.ips.pt)
  */
 public class TransportInformation {
+    private static double HOUR_MINS = 60.0;
+
     private double cost, distance, duration;
 
     /**
@@ -104,5 +106,32 @@ public class TransportInformation {
             getDistance() + transportInformation.getDistance(),
             getDuration() + transportInformation.getDuration()
         );
+    }
+
+    /**
+     * Formats the cost value to a String
+     * @param cost value
+     * @return string with the format NNN.N
+     */
+    public static String formatCost(double cost) {
+        return String.format("%.1f", cost);
+    }
+
+    /**
+     * Formats the distance value to a String
+     * @param distance value
+     * @return string with the format NNN.Nkm
+     */
+    public static String formatDistance(double distance) {
+        return String.format("%.1fkm", distance);
+    }
+
+    /**
+     * Formats the duration value to a String
+     * @param duration value
+     * @return string with the format NNh NNm
+     */
+    public static String formatDuration(double duration) {
+        return String.format("%dh %dm", (int)(duration / HOUR_MINS), Math.round(duration % HOUR_MINS));
     }
 }

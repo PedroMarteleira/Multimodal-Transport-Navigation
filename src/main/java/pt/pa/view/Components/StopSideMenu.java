@@ -1,13 +1,16 @@
 package pt.pa.view.Components;
 
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import pt.pa.model.Stop;
 import pt.pa.view.helpers.ComponentBuilder;
 
-import java.util.Collection;
 import java.util.Objects;
 
+/**
+ * Provides a menu to display a stop information
+ *
+ * @author Pedro Marteleira (202300334@estudantes.ips.pt)
+ */
 public class StopSideMenu extends SideMenu {
     private static double SPACING = 5.0;
     private static double MENU_WIDTH = 200.0;
