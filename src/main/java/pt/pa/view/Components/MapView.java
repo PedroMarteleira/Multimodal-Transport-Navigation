@@ -4,6 +4,7 @@ import com.brunomnsilva.smartgraph.graph.Edge;
 import com.brunomnsilva.smartgraph.graph.Graph;
 import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.*;
+
 import javafx.scene.layout.BorderPane;
 import pt.pa.model.TransportMapController;
 import pt.pa.model.Path;
@@ -14,6 +15,7 @@ import pt.pa.utils.PropertiesUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.List;
@@ -37,6 +39,8 @@ public class MapView extends BorderPane implements Observer {
     private final int mapWidth, mapHeight;
 
     private final double minLat, maxLat, minLon, maxLon;
+
+    private TransportMapController controller;
 
     /**
      * Private constructor to initialize the dimensions and geographical bounds of the map.
@@ -62,6 +66,18 @@ public class MapView extends BorderPane implements Observer {
         this();
 
         this.graph = Objects.requireNonNull(graph);
+        init();
+
+        doLayout();
+    }
+
+
+    /**
+     * Initializes the smartgraph view
+     * @throws IOException if the css file is missing
+     * @throws URISyntaxException if the url has a wrong format
+     */
+    public void init() throws IOException, URISyntaxException {
         InputStream smartgraphProperties = getClass().getClassLoader().getResourceAsStream("smartgraph.properties");
         URL css = MapView.class.getClassLoader().getResource("styles/smartgraph.css");
 
@@ -70,8 +86,6 @@ public class MapView extends BorderPane implements Observer {
             graphView.setMaxHeight(Integer.parseInt(PropertiesUtil.getInstance().getProperty("map.height")));
             graphView.setMaxWidth(Integer.parseInt(PropertiesUtil.getInstance().getProperty("map.width")));
         }
-
-        doLayout();
     }
 
     /**
@@ -85,6 +99,11 @@ public class MapView extends BorderPane implements Observer {
     private void setSmartGraphVertexPositions() {
         graph.vertices().forEach(vertex -> {
             int[] coordinates = computeVertexScreenPosition(vertex.element().getLatitude(), vertex.element().getLongitude());
+            if(coordinates[0] < 0 || coordinates[1] < 0) { //avoid the invalid
+                coordinates[0] = mapWidth;
+                coordinates[1] = mapHeight;
+            }
+
             graphView.setVertexPosition(vertex, coordinates[0], coordinates[1]);
         });
     }
@@ -114,6 +133,8 @@ public class MapView extends BorderPane implements Observer {
      * Sets the view events
      */
     public void setTriggers(TransportMapController controller) {
+        this.controller = Objects.requireNonNull(controller);
+
         //Stop double-click event:
         graphView.setVertexDoubleClickAction(e -> {
             final Stop stop = ((SmartGraphVertex<Stop>)e).getUnderlyingVertex().element();
@@ -166,6 +187,13 @@ public class MapView extends BorderPane implements Observer {
 
     @Override
     public void update(Object obj) {
-        setSmartGraphVertexPositions();
+        try {
+            init();
+            doLayout();
+
+            if(controller != null) {
+                setTriggers(controller);
+            }
+        } catch (Exception ex) {/* Unique solution that i found */}
     }
 }

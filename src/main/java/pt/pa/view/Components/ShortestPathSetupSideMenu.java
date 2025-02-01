@@ -6,13 +6,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import pt.pa.model.CostField;
 import pt.pa.model.Stop;
-import pt.pa.model.TransportMap;
 import pt.pa.model.TransportMapController;
 import pt.pa.view.MainView;
 import pt.pa.view.helpers.ComponentBuilder;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;

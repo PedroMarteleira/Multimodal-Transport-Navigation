@@ -27,3 +27,19 @@
     -fx-padding: 10px;
     -fx-max-width: 160;
 }
+
+.simple-rounded-button {
+    -fx-padding: 2px 8px;
+    -fx-background-radius: 1000px;
+    -fx-background-color: #ffffff;
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+}
+
+.simple-rounded-button:hover {
+    -fx-background-color: #e0e0e0;
+}
+
+.simple-rounded-button:pressed {
+    -fx-background-color: #ffffff;
+}

@@ -62,6 +62,16 @@ public class TransportMap extends Subject {
     }
 
     /**
+     * Removes the given Stop from the map (user stop)
+     * @param stop to remove
+     */
+    public void removeUserStop(Stop stop) {
+        getGraph().removeVertex(getVertexOfStop(Objects.requireNonNull(stop)));
+        getUserStops().remove(stop);
+        notifyObservers(null);
+    }
+
+    /**
      * Adds a new Route to the map
      * @param route to add
      */

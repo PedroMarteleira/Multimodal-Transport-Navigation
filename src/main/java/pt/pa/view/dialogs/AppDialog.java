@@ -1,5 +1,6 @@
 package pt.pa.view.dialogs;
 
+import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.layout.VBox;
@@ -52,5 +53,17 @@ public class AppDialog<T> extends Dialog<T> {
      */
     public VBox getRoot() {
         return root;
+    }
+
+    /**
+     * Displays an message popup
+     * @param type of alert to show
+     * @param title Message title
+     * @param caption Message body
+     */
+    public void displayAlert(Alert.AlertType type, String title, String caption) {
+        Alert alert = new Alert(type, caption);
+        alert.setHeaderText(title);
+        alert.showAndWait();
     }
 }

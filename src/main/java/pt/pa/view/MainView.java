@@ -2,7 +2,6 @@ package pt.pa.view;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.*;
@@ -10,6 +9,7 @@ import pt.pa.model.*;
 import pt.pa.pattern.observer.Observer;
 import pt.pa.view.Components.*;
 import pt.pa.view.dialogs.RouteInformationDialog;
+import pt.pa.view.dialogs.StopCreationDialog;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -28,6 +28,7 @@ public class MainView extends VBox implements Observer, MainViewInterface {
     private MapView mapView;
     private StackPane root;
     private StatisticsPanel informationPanel;
+    private SimpleRoundedButton addStopButton;
 
     private int defaultMenuLayers;
 
@@ -41,6 +42,7 @@ public class MainView extends VBox implements Observer, MainViewInterface {
         this.mapView = new MapView(transportMap.getGraph());
         this.informationPanel = new StatisticsPanel(transportMap);
         this.menuBar = new MainMenuBar(this);
+        addStopButton = new SimpleRoundedButton("➕", "➕ Criar Paragem");
 
         this.root = new StackPane();
         this.defaultMenuLayers = 0;
@@ -56,15 +58,21 @@ public class MainView extends VBox implements Observer, MainViewInterface {
         root.setAlignment(Pos.TOP_RIGHT);
         //Border pane to define the floating menus position:
         BorderPane mainPane = new BorderPane();
-        mainPane.setMouseTransparent(true);
+        mainPane.setPickOnBounds(false);
         StackPane.setMargin(mainPane, new Insets(MENU_MARGIN));
 
         root.getChildren().addAll(mapView, mainPane);
 
         this.getChildren().addAll(menuBar, root);
-        mainPane.setBottom(new HBox(informationPanel));
+        HBox bottomHbox = new HBox();
+        bottomHbox.setMouseTransparent(true);
+        bottomHbox.getChildren().add(informationPanel);
+        mainPane.setBottom(bottomHbox);
 
         defaultMenuLayers = root.getChildren().size();
+
+        //Button to add a stop:
+        mainPane.setTop(addStopButton);
     }
 
     /**
@@ -75,6 +83,7 @@ public class MainView extends VBox implements Observer, MainViewInterface {
         Objects.requireNonNull(controller);
         menuBar.init(controller);
         mapView.setTriggers(controller);
+        addStopButton.setOnAction(e -> new StopCreationDialog(controller).show());
     }
 
     /**

@@ -1,6 +1,9 @@
 package pt.pa.model;
+import pt.pa.pattern.command.ActionsManager;
+import pt.pa.pattern.command.AddStopCommand;
+import pt.pa.pattern.command.Command;
+import pt.pa.pattern.command.RemoveStopCommand;
 import pt.pa.pattern.factory.TransportSelectionFactory;
-import pt.pa.view.Components.ShortestPathSetupSideMenu;
 import pt.pa.view.MainViewInterface;
 
 import java.util.Collection;
@@ -13,6 +16,8 @@ public class TransportMapController {
     private TransportMap model;
     private MainViewInterface view;
 
+    private ActionsManager actionsManager;
+
     /**
      * Class Constructor
      * @param model (TransportMap)
@@ -21,6 +26,8 @@ public class TransportMapController {
     public TransportMapController(TransportMap model, MainViewInterface view) {
         this.model = Objects.requireNonNull(model);
         this.view = Objects.requireNonNull(view);
+
+        this.actionsManager = new ActionsManager();
     }
 
     /**
@@ -112,6 +119,37 @@ public class TransportMapController {
     }
 
     /**
+     * Adds a new stop to the map
+     * @param stop stop to add
+     */
+    public void doAddStop(Stop stop) {
+        this.actionsManager.execute(new AddStopCommand(model, stop));
+    }
+
+    /**
+     * Removes the stop from the map
+     * @param stop stop to remove
+     */
+    public void doRemoveStop(Stop stop) {
+        this.actionsManager.execute(new RemoveStopCommand(model, stop));
+    }
+
+    /**
+     * Undo the last supported action
+     */
+    public void doUndo() {
+        this.actionsManager.undo();
+    }
+
+    /**
+     * Returns the history of the performed actions
+     * @return performed actions
+     */
+    public Collection<Command> getActionHistory() {
+        return actionsManager.getActionHistory();
+    }
+
+    /**
      * Returns the available transports in the model
      * @return available transports in the model
      */
@@ -119,6 +157,10 @@ public class TransportMapController {
         return model.getAvailableTransports();
     }
 
+    /**
+     * Returns the stops stored in the model
+     * @return stops stored in the model
+     */
     public Collection<Stop> getStops() {
         return model.getStops().stream().sorted().toList();
     }
