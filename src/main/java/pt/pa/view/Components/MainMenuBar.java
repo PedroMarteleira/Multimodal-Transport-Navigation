@@ -4,6 +4,10 @@ import javafx.scene.control.MenuBar;
 import pt.pa.model.TransportMap;
 import pt.pa.model.TransportMapController;
 import pt.pa.view.MainView;
+import pt.pa.view.dialogs.HistoryDialog;
+import pt.pa.view.dialogs.PutWalkingRouteDialog;
+import pt.pa.view.dialogs.StopCreationDialog;
+import pt.pa.view.dialogs.StopRemovalDialog;
 import pt.pa.view.helpers.ComponentBuilder;
 
 import java.util.Objects;
@@ -36,6 +40,7 @@ public class MainMenuBar extends MenuBar {
                             System.out.println("Ola a todos");
                         }),
                         ComponentBuilder.createMenuItem("Exportar...", "Ctrl+S", e -> {}),
+                        ComponentBuilder.createMenuItem("Histórico", "Ctrl+H", e -> new HistoryDialog(controller).show()),
                         ComponentBuilder.createMenuItem("Sair", "Alt+F4", e-> controller.doExit())
                 ),
                 ComponentBuilder.createMenu("Métricas",
@@ -46,6 +51,13 @@ public class MainMenuBar extends MenuBar {
                 ),
                 ComponentBuilder.createMenu("Caminho",
                         ComponentBuilder.createMenuItem("Caminho mais curto...", "", e -> mainView.showFindShortestPathSetupMenu(controller))
+                ),
+                ComponentBuilder.createMenu("Paragens",
+                        ComponentBuilder.createMenuItem("Adicionar...", "", e -> new StopCreationDialog(controller).show()),
+                        ComponentBuilder.createMenuItem("Remover...", "", e -> new StopRemovalDialog(controller).show())
+                ),
+                ComponentBuilder.createMenu("Rotas",
+                        ComponentBuilder.createMenuItem("Adicionar/Atualizar rota a pé...", "", e -> new PutWalkingRouteDialog(controller).show())
                 )
         );
     }

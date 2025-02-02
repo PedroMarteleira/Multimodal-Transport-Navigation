@@ -66,9 +66,11 @@ public class TransportMap extends Subject {
      * @param stop to remove
      */
     public void removeUserStop(Stop stop) {
-        getGraph().removeVertex(getVertexOfStop(Objects.requireNonNull(stop)));
-        getUserStops().remove(stop);
-        notifyObservers(null);
+        if(getUserStops().contains(stop)) {
+            getGraph().removeVertex(getVertexOfStop(Objects.requireNonNull(stop)));
+            getUserStops().remove(stop);
+            notifyObservers(null);
+        }
     }
 
     /**
@@ -302,5 +304,29 @@ public class TransportMap extends Subject {
         }
 
         return paths.stream().findFirst().orElse(null);
+    }
+
+    /**
+     * Returns the route of the given stops
+     * @param stop to find
+     * @param stop1 to find
+     * @return Route of the given stops, null if it doesn't exist
+     */
+    public Route getRouteWithStops(Stop stop, Stop stop1) {
+        Objects.requireNonNull(stop);
+        Objects.requireNonNull(stop1);
+        return getRoutes().stream()
+                .filter(route -> (route.getStart().equals(stop) || route.getStart().equals(stop1)) && (route.getDestination().equals(stop) || route.getDestination().equals(stop1)))
+                .findFirst()
+                .orElse(null);
+    }
+
+    /**
+     * Removes the given route from the map
+     * @param route to remove
+     */
+    public void removeRoute(Route route) {
+        graph.removeEdge(getEdgeOfRoute(route));
+        notifyObservers(null);
     }
 }

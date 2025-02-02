@@ -3,6 +3,7 @@ package pt.pa.view;
 import pt.pa.model.Path;
 import pt.pa.model.Route;
 import pt.pa.model.Stop;
+import pt.pa.pattern.observer.Observer;
 
 import java.util.Collection;
 
@@ -10,7 +11,7 @@ import java.util.Collection;
  * This interface provides the required methods to interact with the controller
  * Very usefull if needed to change the View
  */
-public interface MainViewInterface {
+public interface MainViewInterface extends Observer {
     /**
      * Display the given stops on the map with a menu
      * @param stops to mark

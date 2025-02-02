@@ -78,4 +78,12 @@ public class Route {
     public Map<String, TransportInformation> getTransportsWithInformation() {
         return transports;
     }
+
+    /**
+     * Removes the given transport from the route
+     * @param transport to remove
+     */
+    public void removeTransport(String transport) {
+        transports.remove(transport);
+    }
 }

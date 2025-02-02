@@ -31,4 +31,9 @@ public class RemoveStopCommand implements Command{
     public void unExecute() {
         transportMap.addUserStop(stop);
     }
+
+    @Override
+    public String toString() {
+        return String.format("Remoção da paragem \"%s\"", stop);
+    }
 }

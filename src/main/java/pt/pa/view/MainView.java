@@ -19,7 +19,7 @@ import java.util.Objects;
  * Application MainView
  * @author Pedro Marteleira (202300334@estudantes.ips.pt)
  */
-public class MainView extends VBox implements Observer, MainViewInterface {
+public class MainView extends VBox implements MainViewInterface {
     private static final double MENU_MARGIN = 10.0;
 
     private TransportMap transportMap;

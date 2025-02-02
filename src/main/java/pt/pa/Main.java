@@ -45,7 +45,7 @@ public class Main extends Application {
 
             model.addObservers(view);
 
-            Scene scene = new Scene(view, 1024, 720);
+            Scene scene = new Scene(view, 1024, 745);
             scene.getStylesheets().add(stylesFilePath.toUri().toString());
 
             Stage stage = new Stage(StageStyle.DECORATED);

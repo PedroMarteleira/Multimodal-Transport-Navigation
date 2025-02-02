@@ -1,8 +1,5 @@
 package pt.pa.model;
-import pt.pa.pattern.command.ActionsManager;
-import pt.pa.pattern.command.AddStopCommand;
-import pt.pa.pattern.command.Command;
-import pt.pa.pattern.command.RemoveStopCommand;
+import pt.pa.pattern.command.*;
 import pt.pa.pattern.factory.TransportSelectionFactory;
 import pt.pa.view.MainViewInterface;
 
@@ -138,7 +135,11 @@ public class TransportMapController {
      * Undo the last supported action
      */
     public void doUndo() {
-        this.actionsManager.undo();
+        try {
+            this.actionsManager.undo();
+        } catch (Exception e) {
+            view.displayError("Erro ao Reverter", "Não há ações para reverter!");
+        }
     }
 
     /**
@@ -163,5 +164,61 @@ public class TransportMapController {
      */
     public Collection<Stop> getStops() {
         return model.getStops().stream().sorted().toList();
+    }
+
+    /**
+     * Returns the stops stored in the model added by the user
+     * @return stops stored in the model that are added by the user
+     */
+    public Collection<Stop> getUserStops() {
+        return model.getUserStops().stream().sorted().toList();
+    }
+
+    /**
+     * Puts (Adds if it doesn't exist, update if exist) a route with the given parameters
+     * @param stop stop to use
+     * @param stop1 stop to use
+     * @param transport transport to put the route
+     * @param transportInformation specifications of that transport in the route
+     */
+    private void doPutTransportInformation(Stop stop, Stop stop1, String transport, TransportInformation transportInformation) {
+        Objects.requireNonNull(stop);
+        Objects.requireNonNull(stop1);
+        Objects.requireNonNull(transport);
+        Objects.requireNonNull(transportInformation);
+
+        Route route = model.getRouteWithStops(stop, stop1);
+        if(route == null) {
+            actionsManager.execute(new InsertRouteCommand(stop, stop1, model, transport, transportInformation));
+        } else {
+            if (route.getAvailableTransports().contains(transport)) {
+                actionsManager.execute(new UpdateRouteCommand(route, transport, transportInformation));
+            } else {
+                actionsManager.execute(new InsertRouteCommand(stop, stop1, model, transport, transportInformation));
+            }
+        }
+        view.update(null);
+    }
+
+    /**
+     * Puts (Adds if it doesn't exist, update if exist) a route of walk with the given parameters
+     * @param stop stop to use
+     * @param stop1 stop to use
+     * @param transportInformation specifications of that transport in the route
+     */
+    public void doPutWalkTransportInformation(Stop stop, Stop stop1, TransportInformation transportInformation) {
+        this.doPutTransportInformation(stop, stop1, "walk", transportInformation);
+    }
+
+    /**
+     * Returns the information of a walking route in a given transport
+     * @param stop stop to find
+     * @param stop1 stop to find
+     * @return information of a walking route in a given transport, null if it doesn't exist
+     */
+    public TransportInformation getInformationOfWalkingRoute(Stop stop, Stop stop1) {
+        final Route route = model.getRouteWithStops(stop, stop1);
+        if(route == null) return null;
+        return route.getTransportInformation("walk");
     }
 }
