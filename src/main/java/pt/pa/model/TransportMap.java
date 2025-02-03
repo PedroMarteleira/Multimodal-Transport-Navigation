@@ -329,4 +329,17 @@ public class TransportMap extends Subject {
         graph.removeEdge(getEdgeOfRoute(route));
         notifyObservers(null);
     }
+
+    /**
+     * Replaces the contents of this Map With another one
+     * @param transportMap another
+     */
+    public void replaceWith(TransportMap transportMap) {
+        Objects.requireNonNull(transportMap);
+        this.graph = transportMap.graph;
+        this.transportStrategy = transportMap.transportStrategy;
+        this.pathStrategy = transportMap.pathStrategy;
+        this.userStops = transportMap.userStops;
+        notifyObservers(null);
+    }
 }

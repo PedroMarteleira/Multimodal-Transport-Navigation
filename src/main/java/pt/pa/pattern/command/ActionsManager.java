@@ -42,4 +42,11 @@ public class ActionsManager {
         Command cmd = actionHistory.pop();
         cmd.unExecute();
     }
+
+    /**
+     * Clears the history of commands/actions
+     */
+    public void reset() {
+        actionHistory.clear();
+    }
 }

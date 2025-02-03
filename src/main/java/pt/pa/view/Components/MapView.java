@@ -6,10 +6,7 @@ import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.*;
 
 import javafx.scene.layout.BorderPane;
-import pt.pa.model.TransportMapController;
-import pt.pa.model.Path;
-import pt.pa.model.Route;
-import pt.pa.model.Stop;
+import pt.pa.model.*;
 import pt.pa.pattern.observer.Observer;
 import pt.pa.utils.PropertiesUtil;
 
@@ -32,9 +29,7 @@ public class MapView extends BorderPane implements Observer {
 
     // For cohesion purposes, please parametrize me
     private SmartGraphPanel graphView;
-
-    // For cohesion purposes, please parametrize me
-    private Graph<Stop, Route> graph;
+    private TransportMap model;
 
     private final int mapWidth, mapHeight;
 
@@ -59,13 +54,13 @@ public class MapView extends BorderPane implements Observer {
     /**
      * Constructs a {@code MapView} for the given transport map.
      *
-     * @param graph The transport map to be visualized in the {@code MapView}.
+     * @param model that contains the graph
      * @throws Exception If an error occurs while setting up the graph view (e.g., loading properties or CSS).
      */
-    public MapView(Graph<Stop, Route> graph) throws Exception {
+    public MapView(TransportMap model) throws Exception {
         this();
 
-        this.graph = Objects.requireNonNull(graph);
+        this.model = Objects.requireNonNull(model);
         init();
 
         doLayout();
@@ -82,7 +77,7 @@ public class MapView extends BorderPane implements Observer {
         URL css = MapView.class.getClassLoader().getResource("styles/smartgraph.css");
 
         if (css != null) {
-            this.graphView = new SmartGraphPanel<>(graph, new SmartGraphProperties(smartgraphProperties), new SmartRandomPlacementStrategy(), css.toURI());
+            this.graphView = new SmartGraphPanel<>(model.getGraph(), new SmartGraphProperties(smartgraphProperties), new SmartRandomPlacementStrategy(), css.toURI());
             graphView.setMaxHeight(Integer.parseInt(PropertiesUtil.getInstance().getProperty("map.height")));
             graphView.setMaxWidth(Integer.parseInt(PropertiesUtil.getInstance().getProperty("map.width")));
         }
@@ -97,7 +92,7 @@ public class MapView extends BorderPane implements Observer {
     }
 
     private void setSmartGraphVertexPositions() {
-        graph.vertices().forEach(vertex -> {
+        model.getGraph().vertices().forEach(vertex -> {
             int[] coordinates = computeVertexScreenPosition(vertex.element().getLatitude(), vertex.element().getLongitude());
             if(coordinates[0] < 0 || coordinates[1] < 0) { //avoid the invalid
                 coordinates[0] = mapWidth;
@@ -152,7 +147,7 @@ public class MapView extends BorderPane implements Observer {
      * Clears all marked vertices from the map
      */
     public void clearMarkedVertices() {
-        graph.vertices().stream().map(graphView::getStylableVertex).forEach(style -> style.setStyleClass("vertex"));
+        model.getGraph().vertices().stream().map(graphView::getStylableVertex).forEach(style -> style.setStyleClass("vertex"));
     }
 
     /**
@@ -168,7 +163,7 @@ public class MapView extends BorderPane implements Observer {
      * Clears all the marked edges in the map
      */
     public void clearMarkedEdges() {
-        graph.edges().stream().map(graphView::getStylableEdge).forEach(style -> style.setStyleClass("edge"));
+        model.getGraph().edges().stream().map(graphView::getStylableEdge).forEach(style -> style.setStyleClass("edge"));
     }
 
     /**
@@ -190,7 +185,7 @@ public class MapView extends BorderPane implements Observer {
         try {
             init();
             doLayout();
-
+            System.out.println("Ola");
             if(controller != null) {
                 setTriggers(controller);
             }

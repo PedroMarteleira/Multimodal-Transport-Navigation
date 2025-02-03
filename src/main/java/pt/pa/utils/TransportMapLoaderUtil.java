@@ -22,8 +22,7 @@ import java.util.stream.Collectors;
 public class TransportMapLoaderUtil {
 
     //Default file paths:
-    private static final String DEFAULT_ROUTES_FILE_PATH = "src/main/resources/dataset/routes.json";
-    private static final String DEFAULT_STOPS_FILE_PATH = "src/main/resources/dataset/stops.json";
+    private static final DataSet DEFAULT_DATASET = new DataSet("src/main/resources/dataset/stops.json", "src/main/resources/dataset/routes.json");
 
     private static TransportMapLoaderUtil instance;
 
@@ -32,14 +31,13 @@ public class TransportMapLoaderUtil {
 
     /**
      * Class constructor
-     * @param stopsFilePath json file with the stops
-     * @param routesFilePath json file with the routes
+     * @param dataSet dataset of the files
      * @throws IOException if some error occurs reading/parsing the file
      */
-    public TransportMapLoaderUtil(String stopsFilePath, String routesFilePath) throws IOException {
+    public TransportMapLoaderUtil(DataSet dataSet) throws IOException {
         this.transportMap = new TransportMap();
-        loadStops(stopsFilePath);
-        loadRoutes(routesFilePath);
+        loadStops(dataSet.getStopsFilePath());
+        loadRoutes(dataSet.getRoutesFilePath());
     }
 
     /**
@@ -49,7 +47,7 @@ public class TransportMapLoaderUtil {
      */
     public static TransportMapLoaderUtil getInstance() throws IOException {
         if (instance == null) {
-            instance = new TransportMapLoaderUtil(DEFAULT_STOPS_FILE_PATH, DEFAULT_ROUTES_FILE_PATH);
+            instance = new TransportMapLoaderUtil(DEFAULT_DATASET);
         }
         return instance;
     }

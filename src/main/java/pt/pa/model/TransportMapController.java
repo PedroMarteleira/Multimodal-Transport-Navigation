@@ -1,8 +1,13 @@
 package pt.pa.model;
+import javafx.stage.FileChooser;
 import pt.pa.pattern.command.*;
 import pt.pa.pattern.factory.TransportSelectionFactory;
+import pt.pa.utils.DataSet;
+import pt.pa.utils.TransportMapLoaderUtil;
 import pt.pa.view.MainViewInterface;
 
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -220,5 +225,21 @@ public class TransportMapController {
         final Route route = model.getRouteWithStops(stop, stop1);
         if(route == null) return null;
         return route.getTransportInformation("walk");
+    }
+
+    /**
+     * Loads the dataSet from the user
+     */
+    public void doLoadDataSet() {
+        DataSet dataSet = view.requestDataSet();
+        if(dataSet != null) {
+            try {
+                TransportMapLoaderUtil loader = new TransportMapLoaderUtil(dataSet);
+                actionsManager.reset();
+                model.replaceWith(loader.getLoadedTransportMap());
+            } catch (Exception e) {
+                view.displayError("Erro ao carregar dataset", "Formato de ficheiro invalido!");
+            }
+        }
     }
 }

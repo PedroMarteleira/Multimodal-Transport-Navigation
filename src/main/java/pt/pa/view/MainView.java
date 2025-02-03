@@ -7,7 +7,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.layout.*;
 import pt.pa.model.*;
 import pt.pa.pattern.observer.Observer;
+import pt.pa.utils.DataSet;
 import pt.pa.view.Components.*;
+import pt.pa.view.dialogs.LoadDataSetDialog;
 import pt.pa.view.dialogs.RouteInformationDialog;
 import pt.pa.view.dialogs.StopCreationDialog;
 
@@ -39,7 +41,7 @@ public class MainView extends VBox implements MainViewInterface {
      */
     public MainView(TransportMap transportMap) throws Exception {
         this.transportMap = Objects.requireNonNull(transportMap);
-        this.mapView = new MapView(transportMap.getGraph());
+        this.mapView = new MapView(transportMap);
         this.informationPanel = new StatisticsPanel(transportMap);
         this.menuBar = new MainMenuBar(this);
         addStopButton = new SimpleRoundedButton("➕", "➕ Criar Paragem");
@@ -61,9 +63,9 @@ public class MainView extends VBox implements MainViewInterface {
         mainPane.setPickOnBounds(false);
         StackPane.setMargin(mainPane, new Insets(MENU_MARGIN));
 
-        root.getChildren().addAll(mapView, mainPane);
+        root.getChildren().setAll(mapView, mainPane);
 
-        this.getChildren().addAll(menuBar, root);
+        this.getChildren().setAll(menuBar, root);
         HBox bottomHbox = new HBox();
         bottomHbox.setMouseTransparent(true);
         bottomHbox.getChildren().add(informationPanel);
@@ -158,5 +160,12 @@ public class MainView extends VBox implements MainViewInterface {
         Alert alert = new Alert(Alert.AlertType.ERROR, caption);
         alert.setHeaderText(title);
         alert.showAndWait();
+    }
+
+    @Override
+    public DataSet requestDataSet() {
+        LoadDataSetDialog loadDataSetDialog = new LoadDataSetDialog();
+        loadDataSetDialog.showAndWait();
+        return loadDataSetDialog.getDataSet();
     }
 }

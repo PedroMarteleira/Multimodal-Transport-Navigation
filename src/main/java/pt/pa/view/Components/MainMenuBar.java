@@ -36,9 +36,7 @@ public class MainMenuBar extends MenuBar {
     public void init(TransportMapController controller) {
         this.getMenus().addAll(
                 ComponentBuilder.createMenu("Ficheiro",
-                        ComponentBuilder.createMenuItem("Abrir...", "Ctrl+O", e -> {
-                            System.out.println("Ola a todos");
-                        }),
+                        ComponentBuilder.createMenuItem("Abrir...", "Ctrl+O", e -> controller.doLoadDataSet()),
                         ComponentBuilder.createMenuItem("Exportar...", "Ctrl+S", e -> {}),
                         ComponentBuilder.createMenuItem("Histórico", "Ctrl+H", e -> new HistoryDialog(controller).show()),
                         ComponentBuilder.createMenuItem("Sair", "Alt+F4", e-> controller.doExit())

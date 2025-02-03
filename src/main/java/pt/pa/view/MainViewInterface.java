@@ -4,6 +4,7 @@ import pt.pa.model.Path;
 import pt.pa.model.Route;
 import pt.pa.model.Stop;
 import pt.pa.pattern.observer.Observer;
+import pt.pa.utils.DataSet;
 
 import java.util.Collection;
 
@@ -49,4 +50,10 @@ public interface MainViewInterface extends Observer {
      * @param caption message body
      */
     public void displayError(String title, String caption);
+
+    /**
+     * Requests the dataSet files to the user
+     * @return DataSet if valid, null otherwise
+     */
+    public DataSet requestDataSet();
 }
