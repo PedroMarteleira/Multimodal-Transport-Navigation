@@ -2,34 +2,41 @@ package pt.pa.view.dialogs;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import pt.pa.utils.DataSet;
 import pt.pa.view.helpers.ComponentBuilder;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
- * Lets the user choose the files of the dataSet
+ * Lets the user choose the files of the dataSet to export
  */
-public class LoadDataSetDialog extends AppDialog<Object> {
+public class ExportDataSetDialog extends AppDialog<Object> {
     private static final double ITEM_SPACING = 6.0;
 
-    private static final String CHOOSED_TEXT = "Escolhido!", UNCHOOSED_TEXT = "Carregar...";
+    private static final String CHOOSED_TEXT = "Escolhido!", UNCHOOSED_TEXT = "Escolher...";
 
     private String stopsFile, routesFile;
     private DataSet dataSet;
 
-    private Button stopsButton, routesButton;
-    private Button applyButton;
+    private final Button stopsButton, routesButton;
+    private final Button applyButton;
+
+    private final Label stopsPathLabel, routesPathLabel;
 
     /**
      * Class constructor
      */
-    public LoadDataSetDialog() {
+    public ExportDataSetDialog() {
         stopsButton = new Button(UNCHOOSED_TEXT);
         routesButton = new Button(UNCHOOSED_TEXT);
-        applyButton = new Button("Carregar DataSet");
+        applyButton = new Button("Exportar DataSet");
+        stopsPathLabel = new Label();
+        routesPathLabel = new Label();
 
         setTitle("Carregar DataSet de ficheiros");
         doLayout();
@@ -42,9 +49,11 @@ public class LoadDataSetDialog extends AppDialog<Object> {
     public void doLayout() {
         getRoot().setSpacing(ITEM_SPACING);
         getRoot().getChildren().addAll(
-            new HBox(ComponentBuilder.createSubtitledLabel("Ficheiro de Paragens: "), stopsButton),
-            new HBox(ComponentBuilder.createSubtitledLabel("Ficheiro de Rotas: "), routesButton),
-            applyButton
+                new HBox(ComponentBuilder.createSubtitledLabel("Ficheiro de Paragens: "), stopsButton),
+                stopsPathLabel,
+                new HBox(ComponentBuilder.createSubtitledLabel("Ficheiro de Rotas: "), routesButton),
+                routesPathLabel,
+                applyButton
         );
     }
 
@@ -56,6 +65,7 @@ public class LoadDataSetDialog extends AppDialog<Object> {
             String path = requestFilePath();
             if(path != null) {
                 stopsButton.setText(CHOOSED_TEXT);
+                stopsPathLabel.setText(path);
                 stopsFile = path;
             }
         });
@@ -64,6 +74,7 @@ public class LoadDataSetDialog extends AppDialog<Object> {
             String path = requestFilePath();
             if(path != null) {
                 routesButton.setText(CHOOSED_TEXT);
+                routesPathLabel.setText(path);
                 routesFile = path;
             }
         });
@@ -73,13 +84,13 @@ public class LoadDataSetDialog extends AppDialog<Object> {
                 this.dataSet = new DataSet(stopsFile, routesFile);
                 this.close();
             } catch (NullPointerException exception) {
-                displayAlert(Alert.AlertType.ERROR, "Erro ao importar dataset", "Ambos os ficheiros tem de ser escolhidos!");
+                displayAlert(Alert.AlertType.ERROR, "Erro ao exportar dataset", "Ambos os ficheiros tem de ser especificados!");
             }
         });
     }
 
     /**
-     * Requests a file to the user
+     * Requests a file path to the user
      * @return filePath if successful, null if canceled
      */
     public String requestFilePath() {
@@ -87,9 +98,17 @@ public class LoadDataSetDialog extends AppDialog<Object> {
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("Ficheiro JSON", "*.json")
         );
-        fileChooser.setTitle("Escolha um ficheiro JSON");
+        fileChooser.setTitle("Salvar ficheiro JSON");
+        fileChooser.setInitialFileName("data.json");
 
-        File selectedFile = fileChooser.showOpenDialog(this.getOwner());
+        File selectedFile = fileChooser.showSaveDialog(this.getOwner());
+
+        //Reserve the file name:
+        if (selectedFile != null){
+            try {
+                Files.createFile(Path.of(selectedFile.toURI()));
+            } catch (Exception e) {/*Nothing needed*/}
+        }
         return (selectedFile != null) ? selectedFile.getAbsolutePath() : null;
     }
 

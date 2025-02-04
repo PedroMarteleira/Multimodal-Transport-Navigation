@@ -1,9 +1,6 @@
 package pt.pa.model;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Represents a route in the context of the problem (can be done by many transports)
@@ -13,6 +10,8 @@ import java.util.Objects;
 public class Route {
     private Stop start, destination;
     private Map<String, TransportInformation> transports;
+    private Set<String> disabledTransports;
+    private boolean isActive;
 
     /**
      * Class constructor
@@ -25,6 +24,8 @@ public class Route {
         this.start = Objects.requireNonNull(start);
         this.destination = Objects.requireNonNull(destination);
         this.transports = new HashMap<>();
+        this.disabledTransports = new HashSet<>();
+        isActive = true;
     }
 
     /**
@@ -85,5 +86,61 @@ public class Route {
      */
     public void removeTransport(String transport) {
         transports.remove(transport);
+    }
+
+    /**
+     * Returns only the transports allowed in this route
+     * @return only the transports allowed in this route
+     */
+    public Collection<String> getAllowedTransports() {
+        return isActive() ?
+                getAvailableTransports().stream().filter(t -> !disabledTransports.contains(t)).toList()
+                : new ArrayList<>();
+    }
+
+    /**
+     * Disables the given transport in this route
+     * @param transport to disable
+     */
+    public void disableTransport(String transport) {
+        disabledTransports.add(transport);
+    }
+
+    /**
+     * Enables the given transport in this route
+     * @param transport to enable
+     */
+    public void enableTransport(String transport) {
+        disabledTransports.remove(transport);
+    }
+
+    /**
+     * Returns the transports that are disabled
+     * @return transports that are disabled
+     */
+    public Collection<String> getDisabledTransports() {
+        return disabledTransports;
+    }
+
+    /**
+     * Disables this route (all transports)
+     */
+    public void disable() {
+        isActive = false;
+    }
+
+    /**
+     * Enables this route
+     */
+    public void enable() {
+        this.isActive = true;
+    }
+
+    /**
+     * Returns If the route is active
+     * @return true = active, false = disabled
+     */
+    public boolean isActive() {
+        return isActive;
     }
 }

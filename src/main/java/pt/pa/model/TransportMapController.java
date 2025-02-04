@@ -1,13 +1,11 @@
 package pt.pa.model;
-import javafx.stage.FileChooser;
 import pt.pa.pattern.command.*;
 import pt.pa.pattern.factory.TransportSelectionFactory;
 import pt.pa.utils.DataSet;
-import pt.pa.utils.TransportMapLoaderUtil;
+import pt.pa.utils.TransportMapFileHandlerUtil;
+import pt.pa.view.Components.MapViewMode;
 import pt.pa.view.MainViewInterface;
 
-import javax.swing.filechooser.FileNameExtensionFilter;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -17,6 +15,7 @@ import java.util.Objects;
 public class TransportMapController {
     private TransportMap model;
     private MainViewInterface view;
+    private TransportMapFileHandlerUtil fileHandlerUtil;
 
     private ActionsManager actionsManager;
 
@@ -231,15 +230,40 @@ public class TransportMapController {
      * Loads the dataSet from the user
      */
     public void doLoadDataSet() {
-        DataSet dataSet = view.requestDataSet();
+        DataSet dataSet = view.requestImportDataSet();
         if(dataSet != null) {
             try {
-                TransportMapLoaderUtil loader = new TransportMapLoaderUtil(dataSet);
+                TransportMapFileHandlerUtil loader = new TransportMapFileHandlerUtil(dataSet);
+                loader.load();
                 actionsManager.reset();
                 model.replaceWith(loader.getLoadedTransportMap());
             } catch (Exception e) {
                 view.displayError("Erro ao carregar dataset", "Formato de ficheiro invalido!");
             }
         }
+    }
+
+    /**
+     * Exports the data
+     */
+    public void doExportData() {
+        DataSet dataSet = view.requestExportDataSet();
+        if(dataSet != null) {
+            try {
+                TransportMapFileHandlerUtil exporter = new TransportMapFileHandlerUtil(dataSet, model);
+                exporter.exportDataSet();
+            } catch (Exception e) {
+                //Its very, very unlikable to this happen!
+                view.displayError("Erro ao exportar dataset", "O ficheiro está a ser acedido por algum outro processo!");
+            }
+        }
+    }
+
+    /**
+     * Sets the map view mode
+     * @param viewMode mode
+     */
+    public void doSetViewMode(MapViewMode viewMode) {
+        view.setViewMode(viewMode);
     }
 }

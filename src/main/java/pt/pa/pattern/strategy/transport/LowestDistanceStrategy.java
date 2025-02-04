@@ -30,7 +30,7 @@ public class LowestDistanceStrategy implements  TransportStrategy {
 
     @Override
     public String getTransport(Route route) throws MissingTransportException {
-        return route.getAvailableTransports().stream().filter(availableTransports::contains).min((a, b) -> {
+        return route.getAllowedTransports().stream().filter(availableTransports::contains).min((a, b) -> {
             final TransportInformation ta = route.getTransportInformation(a);
             final TransportInformation tb = route.getTransportInformation(b);
             return (int) (ta.getDistance() * FACTOR - tb.getDistance() * FACTOR);

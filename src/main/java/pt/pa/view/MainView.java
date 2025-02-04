@@ -6,9 +6,9 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.*;
 import pt.pa.model.*;
-import pt.pa.pattern.observer.Observer;
 import pt.pa.utils.DataSet;
 import pt.pa.view.Components.*;
+import pt.pa.view.dialogs.ExportDataSetDialog;
 import pt.pa.view.dialogs.LoadDataSetDialog;
 import pt.pa.view.dialogs.RouteInformationDialog;
 import pt.pa.view.dialogs.StopCreationDialog;
@@ -163,9 +163,21 @@ public class MainView extends VBox implements MainViewInterface {
     }
 
     @Override
-    public DataSet requestDataSet() {
+    public DataSet requestImportDataSet() {
         LoadDataSetDialog loadDataSetDialog = new LoadDataSetDialog();
         loadDataSetDialog.showAndWait();
         return loadDataSetDialog.getDataSet();
+    }
+
+    @Override
+    public DataSet requestExportDataSet() {
+        ExportDataSetDialog exportDataSetDialog = new ExportDataSetDialog();
+        exportDataSetDialog.showAndWait();
+        return exportDataSetDialog.getDataSet();
+    }
+
+    @Override
+    public void setViewMode(MapViewMode viewMode) {
+        mapView.setViewMode(viewMode);
     }
 }

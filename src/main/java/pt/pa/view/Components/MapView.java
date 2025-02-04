@@ -5,7 +5,8 @@ import com.brunomnsilva.smartgraph.graph.Graph;
 import com.brunomnsilva.smartgraph.graph.Vertex;
 import com.brunomnsilva.smartgraph.graphview.*;
 
-import javafx.scene.layout.BorderPane;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import pt.pa.model.*;
 import pt.pa.pattern.observer.Observer;
 import pt.pa.utils.PropertiesUtil;
@@ -180,12 +181,19 @@ public class MapView extends BorderPane implements Observer {
         }
     }
 
+    /**
+     * Sets the map view mode
+     * @param viewMode Map view mode
+     */
+    public void setViewMode(MapViewMode viewMode) {
+        graphView.setBackground(new Background(new BackgroundImage(new Image(viewMode.getFilePath().toUri().toString()), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
+    }
+
     @Override
     public void update(Object obj) {
         try {
             init();
             doLayout();
-            System.out.println("Ola");
             if(controller != null) {
                 setTriggers(controller);
             }

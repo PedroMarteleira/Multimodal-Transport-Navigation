@@ -23,7 +23,7 @@ public class FixedTransportStrategy implements TransportStrategy {
 
     @Override
     public double getWeight(Route route) throws MissingTransportException {
-        if(!route.getAvailableTransports().contains(transport))
+        if(!route.getAllowedTransports().contains(transport))
             throw new MissingTransportException();
         return route.getTransportInformation(getTransport(route)).getDistance();
     }

@@ -18,7 +18,7 @@ import java.nio.file.Paths;
 public class AppDialog<T> extends Dialog<T> {
     private static final double WIDTH = 400, HEIGHT = 200;
 
-    private VBox root;
+    private final VBox root;
 
     /**
      * Class constructor

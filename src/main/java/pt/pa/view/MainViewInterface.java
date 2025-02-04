@@ -5,6 +5,7 @@ import pt.pa.model.Route;
 import pt.pa.model.Stop;
 import pt.pa.pattern.observer.Observer;
 import pt.pa.utils.DataSet;
+import pt.pa.view.Components.MapViewMode;
 
 import java.util.Collection;
 
@@ -52,8 +53,20 @@ public interface MainViewInterface extends Observer {
     public void displayError(String title, String caption);
 
     /**
-     * Requests the dataSet files to the user
+     * Requests the dataSet files to load to the user
      * @return DataSet if valid, null otherwise
      */
-    public DataSet requestDataSet();
+    public DataSet requestImportDataSet();
+
+    /**
+     * Requests the dataSet files to export to the user
+     * @return DataSet if valid, null otherwise
+     */
+    public DataSet requestExportDataSet();
+
+    /**
+     * Sets the map view mode
+     * @param viewMode mode
+     */
+    public void setViewMode(MapViewMode viewMode);
 }

@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Main-Class: pt.pa.Main
+Class-Path: error_prone_annotations-2.27.0.jar javafx-graphics-20.jar ju
+ nit-jupiter-5.8.1.jar junit-jupiter-engine-5.8.1.jar javafx-controls-20
+ -win.jar javafx-base-20.jar javafx-controls-20.jar javafx-graphics-20-w
+ in.jar opentest4j-1.2.0.jar apiguardian-api-1.1.2.jar junit-platform-co
+ mmons-1.8.1.jar gson-2.11.0.jar junit-jupiter-params-5.8.1.jar junit-ju
+ piter-api-5.8.1.jar junit-platform-engine-1.8.1.jar smartgraph-2.0.0.ja
+ r javafx-base-20-win.jar
+

@@ -6,7 +6,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import pt.pa.model.TransportMapController;
 import pt.pa.model.TransportMap;
-import pt.pa.utils.TransportMapLoaderUtil;
+import pt.pa.utils.TransportMapFileHandlerUtil;
 import pt.pa.view.MainView;
 
 import java.nio.file.Path;
@@ -36,7 +36,9 @@ public class Main extends Application {
             //General application stylesheet:
             Path stylesFilePath = Paths.get(STYLES_FILE_PATH);
 
-            TransportMap model = TransportMapLoaderUtil.getInstance().getLoadedTransportMap();
+            TransportMapFileHandlerUtil loader = new TransportMapFileHandlerUtil(null);
+            loader.load();
+            TransportMap model = loader.getLoadedTransportMap();
 
             MainView view = new MainView(model);
 

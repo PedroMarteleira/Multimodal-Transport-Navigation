@@ -1,5 +1,7 @@
 package pt.pa.view.dialogs;
 
+import javafx.scene.control.CheckBox;
+import javafx.scene.layout.Region;
 import pt.pa.model.CostField;
 import pt.pa.model.Route;
 import pt.pa.model.TransportInformation;
@@ -18,6 +20,7 @@ public class RouteInformationDialog extends AppDialog<Object> {
     private Route route;
 
     private TableComponent transportsTable;
+    private CheckBox activeCheckBox;
 
     /**
      * Class constructor
@@ -28,10 +31,12 @@ public class RouteInformationDialog extends AppDialog<Object> {
 
         this.route = Objects.requireNonNull(route);
         this.transportsTable = new TableComponent();
+        this.activeCheckBox = new CheckBox("Ativa");
 
         setTitle("Informação da rota");
 
-        doLayout();
+        //Checkbox:
+        activeCheckBox.setSelected(route.isActive());
 
         //Table columns:
         transportsTable.addColumn("Transporte");
@@ -49,17 +54,42 @@ public class RouteInformationDialog extends AppDialog<Object> {
                     TransportInformation.formatDuration(information.getDuration())
             );
         });
+
+
+        doLayout();
+        setTriggers();
     }
 
     /**
      * Does the layout
      */
     private void doLayout() {
+        getDialogPane().setPrefHeight(Region.USE_COMPUTED_SIZE);
         //Add the controls
         getRoot().getChildren().addAll(
                 ComponentBuilder.createTitledLabel(route.getStart() + " ↔ " + route.getDestination()),
                 ComponentBuilder.createSubtitledLabel("Transportes:"),
-                transportsTable
+                transportsTable,
+                activeCheckBox,
+                ComponentBuilder.createSubtitledLabel("Desativar transportes:"),
+                ComponentBuilder.createLabel("NOTA: selecionado = inativo")
         );
+
+        getRoot().getChildren().addAll(
+                route.getAvailableTransports().stream().map(t -> ComponentBuilder.createCheckBox(t, route.getDisabledTransports())).toList()
+        );
+    }
+
+    /**
+     * Sets the dialog triggers/events
+     */
+    private void setTriggers() {
+        activeCheckBox.setOnAction(e -> {
+            if (activeCheckBox.isSelected()) {
+                route.enable();
+            } else {
+                route.disable();
+            }
+        });
     }
 }
