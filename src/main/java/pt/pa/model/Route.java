@@ -143,4 +143,9 @@ public class Route {
     public boolean isActive() {
         return isActive;
     }
+
+    @Override
+    public String toString() {
+        return getStart() + " ↔ " + getDestination();
+    }
 }

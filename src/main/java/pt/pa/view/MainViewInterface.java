@@ -3,6 +3,7 @@ package pt.pa.view;
 import pt.pa.model.Path;
 import pt.pa.model.Route;
 import pt.pa.model.Stop;
+import pt.pa.model.TransportMapController;
 import pt.pa.pattern.observer.Observer;
 import pt.pa.utils.DataSet;
 import pt.pa.view.Components.MapViewMode;
@@ -41,9 +42,10 @@ public interface MainViewInterface extends Observer {
 
     /**
      * Displays the information about the provided route
+     * @param controller to control
      * @param route to show info
      */
-    public void showRouteInformation(Route route);
+    public void showRouteInformation(TransportMapController controller, Route route);
 
     /**
      * Shows an error to the user

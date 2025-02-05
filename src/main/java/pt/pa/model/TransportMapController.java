@@ -89,7 +89,7 @@ public class TransportMapController {
      */
     public void doShowRouteInformation(Route route) {
         Objects.requireNonNull(route); //Explode if null
-        view.showRouteInformation(route);
+        view.showRouteInformation(this, route);
     }
 
     /**
@@ -265,5 +265,39 @@ public class TransportMapController {
      */
     public void doSetViewMode(MapViewMode viewMode) {
         view.setViewMode(viewMode);
+    }
+
+    /**
+     * Disables the given route
+     * @param route to execute in
+     */
+    public void doDisableRoute(Route route) {
+        actionsManager.execute(new DisableRouteCommand(route));
+    }
+
+    /**
+     * Activates the given route
+     * @param route to execute in
+     */
+    public void doEnableRoute(Route route) {
+        actionsManager.execute(new EnableRouteCommand(route));
+    }
+
+    /**
+     * Disables the given transport on the given route
+     * @param route to execute in
+     * @param transport to disable
+     */
+    public void doDisableTransportOnRoute(Route route, String transport) {
+        actionsManager.execute(new DisableTransportOnRouteCommand(route, transport));
+    }
+
+    /**
+     * Enables the given transport on the given route
+     * @param route to execute in
+     * @param transport to enable
+     */
+    public void doEnableTransportOnRoute(Route route, String transport) {
+        actionsManager.execute(new EnableTransportOnRouteCommand(route, transport));
     }
 }

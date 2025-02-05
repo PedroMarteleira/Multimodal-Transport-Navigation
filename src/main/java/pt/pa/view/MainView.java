@@ -150,9 +150,9 @@ public class MainView extends VBox implements MainViewInterface {
     }
 
     @Override
-    public void showRouteInformation(Route route) {
+    public void showRouteInformation(TransportMapController controller, Route route) {
         closeSideMenus();
-        new RouteInformationDialog(route).show();
+        new RouteInformationDialog(controller, route).show();
     }
 
     @Override
