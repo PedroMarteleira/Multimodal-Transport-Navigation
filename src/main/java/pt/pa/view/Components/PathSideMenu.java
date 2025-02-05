@@ -46,7 +46,7 @@ public class PathSideMenu extends SideMenu {
             stopContainer.getChildren().setAll(path.getStops().stream().map(stop -> ComponentBuilder.createLabel("• " + stop.toString())).toList());
         }
 
-        final TransportInformation information = path.getCostsInformation();
+        final TransportInformation information = path == null ? new TransportInformation() : path.getCostsInformation();
         costLabel = ComponentBuilder.createLabel(formatField(CostField.COST.toString(), TransportInformation.formatCost(information.getCost())));
         distanceLabel = ComponentBuilder.createLabel(formatField(CostField.DISTANCE.toString(), TransportInformation.formatDistance(information.getDistance())));
         durationLabel = ComponentBuilder.createLabel(formatField(CostField.DURATION.toString(), TransportInformation.formatDuration(information.getDuration())));
