@@ -1,7 +1,6 @@
 package pt.pa.pattern.factory;
 
 import pt.pa.model.CostField;
-import pt.pa.model.TransportMapController;
 import pt.pa.pattern.strategy.transport.LowestCostStrategy;
 import pt.pa.pattern.strategy.transport.LowestDistanceStrategy;
 import pt.pa.pattern.strategy.transport.LowestDurationStrategy;

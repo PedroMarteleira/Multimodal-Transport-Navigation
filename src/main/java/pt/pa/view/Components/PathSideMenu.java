@@ -38,14 +38,12 @@ public class PathSideMenu extends SideMenu {
         this.mapView = Objects.requireNonNull(mapView);
         this.stopContainer = new VBox();
 
-        if(path == null) path = new Path(new ArrayList<>());
 
-        Collection<Stop> stops = path.getStops();
 
-        if(stops.isEmpty()) {
+        if(path == null) {
             stopContainer.getChildren().setAll(ComponentBuilder.createLabel("Caminho Impossível..."));
         } else {
-            stopContainer.getChildren().setAll(stops.stream().map(stop -> ComponentBuilder.createLabel("• " + stop.toString())).toList());
+            stopContainer.getChildren().setAll(path.getStops().stream().map(stop -> ComponentBuilder.createLabel("• " + stop.toString())).toList());
         }
 
         final TransportInformation information = path.getCostsInformation();

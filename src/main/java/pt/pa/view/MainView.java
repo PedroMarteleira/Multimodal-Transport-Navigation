@@ -129,17 +129,24 @@ public class MainView extends VBox implements MainViewInterface {
         new AllTransportStopsSideMenu(root, mapView, stops).show();
     }
 
-    @Override
-    public void displayPath(Path path) {
-        closeSideMenus();
+    /**
+     * Displays the path and the information
+     * @param path to display
+     */
+    private void showPath(Path path) {
         mapView.markPath(path);
         new PathSideMenu(root, mapView, path).show();
     }
 
     @Override
+    public void displayPath(Path path) {
+        closeSideMenus();
+        showPath(path);
+    }
+
+    @Override
     public void displayShortestPath(Path path) {
-        mapView.markPath(path);
-        new PathSideMenu(root, mapView, path).show();
+        showPath(path);
     }
 
     @Override

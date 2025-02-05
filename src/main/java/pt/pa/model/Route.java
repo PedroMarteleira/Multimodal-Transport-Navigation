@@ -94,7 +94,7 @@ public class Route {
      */
     public Collection<String> getAllowedTransports() {
         return isActive() ?
-                getAvailableTransports().stream().filter(t -> !disabledTransports.contains(t)).toList()
+                getAvailableTransports().stream().filter(t -> !getDisabledTransports().contains(t)).toList()
                 : new ArrayList<>();
     }
 

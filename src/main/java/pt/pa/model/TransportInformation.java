@@ -11,7 +11,7 @@ import java.util.Objects;
  * @author Pedro Marteleira (202300334@estudantes.ips.pt)
  */
 public class TransportInformation {
-    private static double HOUR_MINS = 60.0;
+    private static final double HOUR_MINS = 60.0;
 
     private double cost, distance, duration;
 

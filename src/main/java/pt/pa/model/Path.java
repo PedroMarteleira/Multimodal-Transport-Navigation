@@ -2,6 +2,7 @@ package pt.pa.model;
 
 import com.brunomnsilva.smartgraph.graph.Edge;
 import com.brunomnsilva.smartgraph.graph.Vertex;
+import pt.pa.pattern.strategy.transport.TransportStrategy;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,14 +24,16 @@ public class Path {
 
     /**
      * Class constructor
-     * @param vertices list of vertices in the path
+     * @param initialVertex begin of the path
      */
-    public Path(List<Vertex<Stop>> vertices) {
-        this.vertices = Objects.requireNonNull(vertices);
+    public Path(Vertex<Stop> initialVertex) {
+        this.vertices = new ArrayList<>();
         this.totalCost = 0.0;
         this.transports = new ArrayList<>();
         this.edges = new ArrayList<>();
         this.costsInformation = new TransportInformation();
+
+        this.vertices.add(Objects.requireNonNull(initialVertex));
     }
 
     /**
@@ -46,42 +49,24 @@ public class Path {
     }
 
     /**
-     * Adds a new vertex to the path
-     * @param vertex to add
+     * Registers a new movement in the path
+     * @param vertex movement dest
+     * @param edge edge used
+     * @param cost movement cost
+     * @param usedTransport transport used
+     * @param costsInformation all costs of this route
      */
-    public void addVertex(Vertex<Stop> vertex) {
-        this.vertices.add(Objects.requireNonNull(vertex));
-    }
+    public void addMovement(Vertex<Stop> vertex, Edge<Route, Stop> edge, double cost, String usedTransport, TransportInformation costsInformation) {
+        Objects.requireNonNull(vertex);
+        Objects.requireNonNull(edge);
+        Objects.requireNonNull(usedTransport);
+        Objects.requireNonNull(costsInformation);
 
-    /**
-     * Adds a new edge to the path
-     * @param edge to add
-     */
-    public void addEdge(Edge<Route, Stop> edge) {
-        this.edges.add(Objects.requireNonNull(edge));
-    }
-
-    /**
-     * Adds the given costs (transport information) to the path
-     */
-    public void addCostsInformation(TransportInformation costsInformation) {
-        this.costsInformation = getCostsInformation().sum(costsInformation);
-    }
-
-    /**
-     * Add the cost to the path (Accumulated)
-     * @param cost to add
-     */
-    public void addCost(double cost) {
+        this.vertices.add(vertex);
+        this.edges.add(edge);
         this.totalCost += cost;
-    }
-
-    /**
-     * Adds transport to the path
-     * @param transport to add
-     */
-    public void addTransport(String transport) {
-        this.transports.add(Objects.requireNonNull(transport));
+        this.transports.add(usedTransport);
+        this.costsInformation = this.costsInformation.sum(costsInformation);
     }
 
     /**

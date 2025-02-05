@@ -26,10 +26,6 @@ public class TransportMap extends Subject {
     private Set<String> availableTransports;
     private Set<Stop> userStops;
 
-    private TransportStrategy transportStrategy;
-    private PathStrategy pathStrategy;
-
-
     /**
      * Class constructor
      */
@@ -38,8 +34,6 @@ public class TransportMap extends Subject {
         graph = new GraphEdgeList<>();
         availableTransports = new TreeSet<>();
         userStops = new HashSet<>();
-        transportStrategy = new LowestDurationStrategy(availableTransports); //Default strategy
-        pathStrategy = new ShortestPathStrategy();
     }
 
     /**
@@ -225,37 +219,26 @@ public class TransportMap extends Subject {
     }
 
     /**
-     * Sets the strategy used to find the shortest path
-     * @param pathStrategy new strategy
-     */
-    public void setPathStrategy(PathStrategy pathStrategy) {
-        this.pathStrategy = Objects.requireNonNull(pathStrategy);
-    }
-
-    /**
-     * Sets the strategy used to select the transport in the path finding
-     * @param transportStrategy new strategy
-     */
-    public void setTransportStrategy(TransportStrategy transportStrategy) {
-        this.transportStrategy = Objects.requireNonNull(transportStrategy);
-    }
-
-    /**
      * Variance of dijsksta or A* algorithm (priority queue-based pathfinding algorithm) that supports negative weights
      * Uses the pathStrategy to determine the priority of the path (asc = shortest paths, desc = bigger paths)
      * Uses transportMapStrategy to determine the transport to choose in a route
      * @param start path begin
      * @param end path end
+     * @param pathStrategy strategy used to order the paths
+     * @param transportStrategy strategy used to select the best transport from a route
      * @return path from the start to the end stop, null if impossible
      */
-    public Path findPath(Stop start, Stop end) {
+    public Path findPath(Stop start, Stop end, PathStrategy pathStrategy, TransportStrategy transportStrategy) {
         Vertex<Stop> startVertex = getVertexOfStop(start);
         Vertex<Stop> endVertex = getVertexOfStop(end);
+
+        Objects.requireNonNull(pathStrategy);
+        Objects.requireNonNull(transportStrategy);
 
         final Queue<Path> bestPaths = new PriorityQueue<>(pathStrategy);
         final Set<Vertex<Stop>> visited = new HashSet<>();
 
-        bestPaths.add(new Path(Collections.singletonList(startVertex)));
+        bestPaths.add(new Path(startVertex));
 
         while (!bestPaths.isEmpty() && !bestPaths.peek().getLastVertex().equals(endVertex)) {
             Path current = bestPaths.remove();
@@ -267,13 +250,9 @@ public class TransportMap extends Subject {
                     try {
                         //Add the path:
                         Path newPath = new Path(current);
-                        newPath.addVertex(vertex);
-                        newPath.addEdge(edge);
-                        newPath.addCost(transportStrategy.getWeight(edge.element()));
-
                         final String usedTransport = transportStrategy.getTransport(edge.element());
-                        newPath.addTransport(usedTransport);
-                        newPath.addCostsInformation(edge.element().getTransportInformation(usedTransport));
+
+                        newPath.addMovement(vertex, edge, transportStrategy.getWeight(edge.element()), usedTransport, edge.element().getTransportInformation(usedTransport));
 
                         bestPaths.add(newPath);
                     } catch (MissingTransportException e) {/* Next Iteration */}
@@ -290,13 +269,12 @@ public class TransportMap extends Subject {
      * @return biggest path, null if impossible
      */
     public Path getLongestPathOfTransport(String transport) {
-        setTransportStrategy(new FixedTransportStrategy(transport));
         Set<Path> paths = new TreeSet<>(new LargestPathStrategy());
 
         List<Stop> stops = getStops().stream().toList();
         for (int i = 0; i < stops.size(); i++) {
             for (int j = i + 1; j < stops.size(); j++) {
-                final Path path = findPath(stops.get(i), stops.get(j));
+                final Path path = findPath(stops.get(i), stops.get(j), new LargestPathStrategy(),new FixedTransportStrategy(transport));
                 if (path != null) {
                     paths.add(path);
                 }
@@ -337,8 +315,6 @@ public class TransportMap extends Subject {
     public void replaceWith(TransportMap transportMap) {
         Objects.requireNonNull(transportMap);
         this.graph = transportMap.graph;
-        this.transportStrategy = transportMap.transportStrategy;
-        this.pathStrategy = transportMap.pathStrategy;
         this.userStops = transportMap.userStops;
         notifyObservers(null);
     }

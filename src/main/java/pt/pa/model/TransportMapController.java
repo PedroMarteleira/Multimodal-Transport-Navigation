@@ -1,6 +1,7 @@
 package pt.pa.model;
 import pt.pa.pattern.command.*;
 import pt.pa.pattern.factory.TransportSelectionFactory;
+import pt.pa.pattern.strategy.path.ShortestPathStrategy;
 import pt.pa.utils.DataSet;
 import pt.pa.utils.TransportMapFileHandlerUtil;
 import pt.pa.view.Components.MapViewMode;
@@ -15,7 +16,6 @@ import java.util.Objects;
 public class TransportMapController {
     private TransportMap model;
     private MainViewInterface view;
-    private TransportMapFileHandlerUtil fileHandlerUtil;
 
     private ActionsManager actionsManager;
 
@@ -115,8 +115,7 @@ public class TransportMapController {
             return;
         }
 
-        model.setTransportStrategy(TransportSelectionFactory.createTransportSelection(field, allowedTransports));
-        view.displayShortestPath(model.findPath(start, end));
+        view.displayShortestPath(model.findPath(start, end, new ShortestPathStrategy(), TransportSelectionFactory.createTransportSelection(field, allowedTransports)));
     }
 
     /**
