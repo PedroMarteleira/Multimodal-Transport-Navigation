@@ -1,12 +1,12 @@
 package pt.pa.model;
 
+import com.brunomnsilva.smartgraph.graph.Edge;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import pt.pa.pattern.strategy.path.ShortestPathStrategy;
+import pt.pa.pattern.strategy.transport.LowestDistanceStrategy;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 class TransportMapTest {
@@ -22,8 +22,13 @@ class TransportMapTest {
         transportMap.addStop(corroios);
         transportMap.addStop(almada);
 
-        transportMap.addRoute(new Route(amora, corroios));
-        transportMap.addRoute(new Route(almada, corroios));
+        Route route = new Route(amora, corroios);
+        Route route1 = new Route(almada, corroios);
+        transportMap.addRoute(route);
+        transportMap.addRoute(route1);
+
+        route1.putTransport("walk", new TransportInformation(3,2,1));
+        route.putTransport("walk", new TransportInformation(3,2,1));
     }
 
     @Test
@@ -96,5 +101,84 @@ class TransportMapTest {
     @Test
     void getRoutes() {
         assertEquals(2, transportMap.getRoutes().size());
+    }
+
+    @Test
+    void getNumberOfUserStops() {
+        Stop userStop = new Stop("US432", "User Stop", 2.43243242, 5.4324323);
+        transportMap.addUserStop(userStop);
+        assertEquals(1, transportMap.getNumberOfUserStops());
+    }
+
+    @Test
+    void getRouteWithStops() {
+        Stop stop1 = (Stop) transportMap.getStops().toArray()[0];
+        Stop stop2 = (Stop) transportMap.getStops().toArray()[2];
+        Route route = transportMap.getRouteWithStops(stop1, stop2);
+        assertNotNull(route);
+        assertEquals(stop1, route.getStart());
+        assertEquals(stop2, route.getDestination());
+    }
+
+    @Test
+    void removeUserStop() {
+        Stop userStop = new Stop("US432", "User Stop", 2.43243242, 5.4324323);
+        transportMap.addUserStop(userStop);
+        transportMap.removeUserStop(userStop);
+        assertEquals(0, transportMap.getNumberOfUserStops());
+    }
+
+    @Test
+    void removeRoute() {
+        Route route = (Route) transportMap.getRoutes().toArray()[0];
+        transportMap.removeRoute(route);
+        assertEquals(1, transportMap.getRoutes().size());
+    }
+
+    @Test
+    void getNumberOfRoutesPerTransport() {
+        Map<String, Integer> routesPerTransport = transportMap.getNumberOfRoutesPerTransport();
+        assertNotNull(routesPerTransport);
+    }
+
+    @Test
+    void getNumberOfIsolatedStops() {
+        int isolatedStops = transportMap.getNumberOfIsolatedStops();
+        assertTrue(isolatedStops >= 0);
+    }
+
+    @Test
+    void findPath() {
+        Stop start = (Stop) transportMap.getStops().toArray()[2];
+        Stop end = (Stop) transportMap.getStops().toArray()[0];
+        Path path = transportMap.findPath(start, end, new ShortestPathStrategy(), new LowestDistanceStrategy(transportMap.getAvailableTransports()));
+        assertNull(path);
+    }
+
+    @Test
+    void replaceWith() {
+        TransportMap newTransportMap = new TransportMap();
+        newTransportMap.addStop(new Stop("NEW432", "New Stop", 1.0, 2.0));
+        transportMap.replaceWith(newTransportMap);
+        assertEquals(1, transportMap.getStops().size());
+    }
+
+
+    @Test
+    void getNumberOfStops() {
+        assertEquals(3, transportMap.getNumberOfStops());
+    }
+
+    @Test
+    void getLongestPathOfTransport() {
+        Path longestPath = transportMap.getLongestPathOfTransport("walk");
+        assertNotNull(longestPath);
+    }
+
+    @Test
+    void getEdgeOfRoute() {
+        Route route = (Route) transportMap.getRoutes().toArray()[0];
+        Edge<Route, Stop> edge = transportMap.getEdgeOfRoute(route);
+        assertNotNull(edge);
     }
 }
